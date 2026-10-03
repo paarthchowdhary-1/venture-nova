@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { lessonsForVenture } from "~/content/lessons";
 import { createClient } from "~/lib/supabase/server";
 import { ventureTypeLabel } from "~/lib/ventures";
 
@@ -23,6 +24,18 @@ export default async function DashboardPage() {
     .from("ventures")
     .select("id, name, idea, venture_type, current_stage")
     .order("created_at", { ascending: false });
+
+  const { data: passedRows } = await supabase
+    .from("lesson_progress")
+    .select("venture_id")
+    .eq("passed", true);
+  const passedByVenture = new Map<string, number>();
+  for (const row of passedRows ?? []) {
+    passedByVenture.set(
+      row.venture_id,
+      (passedByVenture.get(row.venture_id) ?? 0) + 1,
+    );
+  }
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
@@ -61,6 +74,10 @@ export default async function DashboardPage() {
                   </Badge>
                   <Badge variant="outline" className="capitalize">
                     Stage: {venture.current_stage}
+                  </Badge>
+                  <Badge variant="outline">
+                    {passedByVenture.get(venture.id) ?? 0} of{" "}
+                    {lessonsForVenture(venture.venture_type).length} lessons
                   </Badge>
                 </CardContent>
               </Card>
