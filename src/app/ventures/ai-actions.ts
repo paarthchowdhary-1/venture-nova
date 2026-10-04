@@ -7,6 +7,7 @@ import {
   aiConfigured,
   buildVentureContext,
   coachReply,
+  isOutOfCredit,
   type PivotSuggestion,
   suggestPivots,
 } from "~/lib/ai";
@@ -17,7 +18,10 @@ export type CoachState = { ok?: boolean; error?: string };
 export type PivotState = { pivots?: PivotSuggestion[]; error?: string };
 
 const MAX_MESSAGES_PER_HOUR = 30;
+const MAX_MESSAGES_PER_DAY = 80;
 const NOT_CONNECTED = "The AI coach isn't switched on yet. Check back soon.";
+const RESTING =
+  "The coach is taking a break and will be back soon. Everything else in your workspace still works.";
 
 async function session() {
   const supabase = await createClient();
@@ -62,6 +66,20 @@ export async function sendCoachMessage(
     };
   }
 
+  // Row-level security means this only ever counts the signed-in founder's messages.
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { count: todayCount } = await supabase
+    .from("coach_messages")
+    .select("id", { count: "exact", head: true })
+    .eq("role", "user")
+    .gte("created_at", dayAgo);
+  if ((todayCount ?? 0) >= MAX_MESSAGES_PER_DAY) {
+    return {
+      error:
+        "That's a lot of coaching for one day. Go try the next step, and come back tomorrow with what you learned.",
+    };
+  }
+
   const { error: saveError } = await supabase.from("coach_messages").insert({
     venture_id: ventureId,
     role: "user",
@@ -85,6 +103,7 @@ export async function sendCoachMessage(
     reply = await coachReply(buildVentureContext(workspace.snapshot), history);
   } catch (error) {
     console.error("Coach reply failed:", error);
+    if (isOutOfCredit(error)) return { error: RESTING };
     return {
       error:
         "The coach couldn't answer just now. Please try again in a moment.",
@@ -121,6 +140,7 @@ export async function getPivotSuggestions(
     return { pivots };
   } catch (error) {
     console.error("Pivot suggestions failed:", error);
+    if (isOutOfCredit(error)) return { error: RESTING };
     return {
       error: "Couldn't come up with pivots just now. Please try again.",
     };

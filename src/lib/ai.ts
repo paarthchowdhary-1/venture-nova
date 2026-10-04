@@ -13,7 +13,10 @@ import {
   ventureProgress,
 } from "~/lib/insights";
 
-export const AI_MODEL = "claude-opus-5-5";
+// Everyday coaching chat runs on Sonnet (half the price of Opus, plenty good for
+// coaching). Pivot suggestions are rare and worth the strongest model.
+export const COACH_MODEL = "claude-sonnet-5-5";
+export const PIVOT_MODEL = "claude-opus-5-5";
 
 export function aiConfigured() {
   return Boolean(env.ANTHROPIC_API_KEY);
@@ -118,15 +121,29 @@ function textOf(content: { type: string; text?: string }[]) {
     .trim();
 }
 
+/** True when the Anthropic account has run out of prepaid credit. */
+export function isOutOfCredit(error: unknown) {
+  return (
+    error instanceof Anthropic.APIError &&
+    error.status === 400 &&
+    /credit balance/i.test(error.message)
+  );
+}
+
 export async function coachReply(
   context: string,
   history: { role: "user" | "assistant"; content: string }[],
 ): Promise<string> {
   const response = await client().beta.messages.create({
-    model: AI_MODEL,
-    max_tokens: 2000,
+    model: COACH_MODEL,
+    max_tokens: 1500,
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
+    // Caches the instructions, venture summary and earlier turns, so each new
+    // message only pays full price for what is new.
+    cache_control: { type: "ephemeral" },
+    // Chat replies are short; low effort keeps thinking (and cost) down.
+    output_config: { effort: "low" },
     system: `${COACH_SYSTEM}\n\nVENTURE CONTEXT (from the founder's workspace):\n${context}`,
     messages: history,
   });
@@ -159,7 +176,7 @@ export async function suggestPivots(
   context: string,
 ): Promise<PivotSuggestion[]> {
   const response = await client().beta.messages.create({
-    model: AI_MODEL,
+    model: PIVOT_MODEL,
     max_tokens: 3000,
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
