@@ -45,9 +45,13 @@ const ventureTypes = [
 export function VentureTabs() {
   return (
     <Tabs defaultValue="tutoring" className="items-center">
-      <TabsList>
+      <TabsList className="max-w-full">
         {ventureTypes.map((type) => (
-          <TabsTrigger key={type.value} value={type.value}>
+          <TabsTrigger
+            key={type.value}
+            value={type.value}
+            className="min-w-0 px-2 text-center text-xs leading-tight whitespace-normal sm:px-3 sm:text-sm sm:whitespace-nowrap"
+          >
             {type.label}
           </TabsTrigger>
         ))}
