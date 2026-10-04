@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { VentureForm } from "~/components/venture-form";
 import { createClient } from "~/lib/supabase/server";
+import { createVenture } from "../actions";
 
 export default async function NewVenturePage() {
   const supabase = await createClient();
@@ -16,7 +17,7 @@ export default async function NewVenturePage() {
         Tell us about your idea. You can change any of this later.
       </p>
       <div className="mt-8">
-        <VentureForm />
+        <VentureForm action={createVenture} />
       </div>
     </div>
   );

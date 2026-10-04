@@ -86,7 +86,7 @@ function ChatBody() {
                 "max-w-[85%] rounded-lg px-3 py-2 text-sm",
                 message.from === "founder"
                   ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-foreground",
+                  : "bg-secondary text-secondary-foreground",
               )}
             >
               {message.text}
@@ -95,7 +95,7 @@ function ChatBody() {
         ))}
         {isTyping && (
           <div className="flex justify-start">
-            <span className="flex items-center gap-1 rounded-lg bg-muted px-3 py-2">
+            <span className="flex items-center gap-1 rounded-lg bg-secondary px-3 py-2">
               <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.3s]" />
               <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.15s]" />
               <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground" />

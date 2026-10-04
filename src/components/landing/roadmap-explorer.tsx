@@ -70,7 +70,7 @@ export function RoadmapExplorer() {
                 "flex size-5 items-center justify-center rounded-full text-xs",
                 i === active
                   ? "bg-primary-foreground text-primary"
-                  : "bg-muted text-muted-foreground",
+                  : "bg-secondary text-secondary-foreground",
               )}
             >
               {i + 1}

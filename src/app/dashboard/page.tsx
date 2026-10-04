@@ -9,9 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { lessonsForVenture } from "~/content/lessons";
+import { stageInfo } from "~/content/roadmaps";
+import { recommendedActions, ventureProgress } from "~/lib/insights";
 import { createClient } from "~/lib/supabase/server";
 import { ventureTypeLabel } from "~/lib/ventures";
+import { loadWorkspace } from "~/lib/workspace";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -22,20 +24,13 @@ export default async function DashboardPage() {
 
   const { data: ventures } = await supabase
     .from("ventures")
-    .select("id, name, idea, venture_type, current_stage")
+    .select("id")
     .order("created_at", { ascending: false });
-
-  const { data: passedRows } = await supabase
-    .from("lesson_progress")
-    .select("venture_id")
-    .eq("passed", true);
-  const passedByVenture = new Map<string, number>();
-  for (const row of passedRows ?? []) {
-    passedByVenture.set(
-      row.venture_id,
-      (passedByVenture.get(row.venture_id) ?? 0) + 1,
-    );
-  }
+  const workspaces = (
+    await Promise.all(
+      (ventures ?? []).map((v) => loadWorkspace(supabase, v.id)),
+    )
+  ).filter((w) => w !== null);
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
@@ -46,7 +41,7 @@ export default async function DashboardPage() {
         </Button>
       </div>
 
-      {!ventures || ventures.length === 0 ? (
+      {workspaces.length === 0 ? (
         <div className="mt-10 rounded-xl border border-dashed border-border p-10 text-center">
           <p className="font-medium">You haven&apos;t started a venture yet.</p>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -59,30 +54,46 @@ export default async function DashboardPage() {
         </div>
       ) : (
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {ventures.map((venture) => (
-            <Link key={venture.id} href={`/ventures/${venture.id}`}>
-              <Card className="h-full transition-colors hover:bg-accent/40">
-                <CardHeader>
-                  <CardTitle>{venture.name}</CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    {venture.idea}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">
-                    {ventureTypeLabel(venture.venture_type)}
-                  </Badge>
-                  <Badge variant="outline" className="capitalize">
-                    Stage: {venture.current_stage}
-                  </Badge>
-                  <Badge variant="outline">
-                    {passedByVenture.get(venture.id) ?? 0} of{" "}
-                    {lessonsForVenture(venture.venture_type).length} lessons
-                  </Badge>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+          {workspaces.map(({ snapshot }) => {
+            const venture = snapshot.venture;
+            const next = recommendedActions(snapshot)[0];
+            return (
+              <Link key={venture.id} href={`/ventures/${venture.id}`}>
+                <Card className="h-full transition-colors hover:bg-accent/40">
+                  <CardHeader>
+                    <CardTitle>{venture.name}</CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {venture.idea}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-4">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary">
+                        {ventureTypeLabel(venture.venture_type)}
+                      </Badge>
+                      <Badge variant="outline">
+                        {
+                          stageInfo(venture.venture_type, venture.current_stage)
+                            .name
+                        }
+                      </Badge>
+                      <Badge variant="outline">
+                        {ventureProgress(snapshot).percent}% progress
+                      </Badge>
+                    </div>
+                    {next && (
+                      <div className="rounded-lg bg-tint p-3">
+                        <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                          Next best action
+                        </p>
+                        <p className="mt-1 text-sm font-medium">{next.title}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>

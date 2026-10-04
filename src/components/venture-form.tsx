@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { createVenture, type VentureFormState } from "~/app/ventures/actions";
+import type { VentureFormState } from "~/app/ventures/actions";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -13,11 +13,32 @@ const textareaClass =
 const selectClass =
   "h-9 w-full rounded-md border border-input bg-transparent px-3 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm dark:bg-input/30";
 
-export function VentureForm() {
+type Initial = {
+  name: string;
+  idea: string;
+  problem: string | null;
+  target_customer: string | null;
+  venture_type: string;
+};
+
+export function VentureForm({
+  action,
+  initial,
+  submitLabel = "Create venture",
+  pendingLabel = "Saving...",
+}: {
+  action: (
+    state: VentureFormState,
+    formData: FormData,
+  ) => Promise<VentureFormState>;
+  initial?: Initial;
+  submitLabel?: string;
+  pendingLabel?: string;
+}) {
   const [state, formAction, pending] = useActionState<
     VentureFormState,
     FormData
-  >(createVenture, {});
+  >(action, {});
 
   return (
     <form action={formAction} className="flex flex-col gap-5">
@@ -28,6 +49,7 @@ export function VentureForm() {
           name="name"
           required
           maxLength={120}
+          defaultValue={initial?.name}
           placeholder="StudyBuddy"
         />
       </div>
@@ -38,7 +60,7 @@ export function VentureForm() {
           id="ventureType"
           name="ventureType"
           required
-          defaultValue=""
+          defaultValue={initial?.venture_type ?? ""}
           className={selectClass}
         >
           <option value="" disabled>
@@ -50,6 +72,12 @@ export function VentureForm() {
             </option>
           ))}
         </select>
+        {initial && (
+          <p className="text-xs text-muted-foreground">
+            Changing this changes which lessons you are assigned. Lessons you
+            have already passed stay passed.
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -59,6 +87,7 @@ export function VentureForm() {
           name="idea"
           required
           maxLength={2000}
+          defaultValue={initial?.idea}
           className={textareaClass}
           placeholder="An app that helps high school students find study partners."
         />
@@ -70,6 +99,7 @@ export function VentureForm() {
           id="problem"
           name="problem"
           maxLength={2000}
+          defaultValue={initial?.problem ?? ""}
           className={textareaClass}
           placeholder="Students struggle to find people to study with."
         />
@@ -81,12 +111,13 @@ export function VentureForm() {
           id="targetCustomer"
           name="targetCustomer"
           maxLength={1000}
+          defaultValue={initial?.target_customer ?? ""}
           placeholder="High schoolers in AP classes"
         />
       </div>
 
       <Button type="submit" size="lg" disabled={pending}>
-        {pending ? "Saving..." : "Create venture"}
+        {pending ? pendingLabel : submitLabel}
       </Button>
       {state.error && (
         <p role="alert" className="text-sm text-destructive">

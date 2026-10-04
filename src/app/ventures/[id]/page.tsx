@@ -1,11 +1,36 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import { lessonsForVenture, nextLesson, stageIndex } from "~/content/lessons";
-import { createClient } from "~/lib/supabase/server";
+import { stageIndex } from "~/content/lessons";
+import { stageInfo } from "~/content/roadmaps";
+import {
+  recommendedActions,
+  ventureHealth,
+  ventureProgress,
+} from "~/lib/insights";
 import { cn } from "~/lib/utils";
 import { STAGES, ventureTypeLabel } from "~/lib/ventures";
+import { requireWorkspace } from "~/lib/workspace-page";
+
+function Bar({ percent, className }: { percent: number; className?: string }) {
+  return (
+    <div
+      role="progressbar"
+      aria-valuenow={percent}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      className={cn(
+        "h-2 w-full overflow-hidden rounded-full bg-secondary",
+        className,
+      )}
+    >
+      <div
+        className="h-full rounded-full bg-primary"
+        style={{ width: `${Math.max(2, percent)}%` }}
+      />
+    </div>
+  );
+}
 
 export default async function VenturePage({
   params,
@@ -13,203 +38,187 @@ export default async function VenturePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const { snapshot } = await requireWorkspace(id);
+  const venture = snapshot.venture;
 
-  const { data: venture } = await supabase
-    .from("ventures")
-    .select(
-      "id, name, idea, problem, target_customer, venture_type, current_stage",
-    )
-    .eq("id", id)
-    .maybeSingle();
-  if (!venture) notFound();
-
-  const { data: progressRows } = await supabase
-    .from("lesson_progress")
-    .select("lesson_slug, passed, best_score")
-    .eq("venture_id", id);
-
-  const passedSlugs = new Set(
-    (progressRows ?? []).filter((r) => r.passed).map((r) => r.lesson_slug),
-  );
-  const lessons = lessonsForVenture(venture.venture_type);
+  const actions = recommendedActions(snapshot);
+  const nextAction = actions[0];
+  const progress = ventureProgress(snapshot);
+  const health = ventureHealth(snapshot);
   const currentIndex = stageIndex(venture.current_stage);
-  const upNext = nextLesson(lessons, passedSlugs, venture.current_stage);
-  const allDone = lessons.length > 0 && passedSlugs.size >= lessons.length;
-  const currentStageLessons = lessons.filter(
-    (l) => l.stage === venture.current_stage,
-  );
-  const currentStageDone = currentStageLessons.filter((l) =>
-    passedSlugs.has(l.slug),
-  ).length;
-  const nextStageName = STAGES[currentIndex + 1];
+  const info = stageInfo(venture.venture_type, venture.current_stage);
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-12">
+    <div className="mx-auto w-full max-w-3xl px-4 py-10">
       <Link
         href="/dashboard"
         className="text-sm text-muted-foreground hover:text-foreground"
       >
         &larr; All ventures
       </Link>
-      <h1 className="mt-4 text-3xl font-bold tracking-tight">{venture.name}</h1>
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <h1 className="text-3xl font-bold tracking-tight">{venture.name}</h1>
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/ventures/${id}/edit`}>Edit</Link>
+        </Button>
+      </div>
       <div className="mt-3 flex flex-wrap gap-2">
         <Badge variant="secondary">
           {ventureTypeLabel(venture.venture_type)}
         </Badge>
+        <Badge variant="outline">Now: {info.name}</Badge>
       </div>
+      <p className="mt-5 text-muted-foreground">{venture.idea}</p>
 
-      <dl className="mt-8 flex flex-col gap-5">
-        <div>
-          <dt className="text-sm font-medium text-muted-foreground">Idea</dt>
-          <dd className="mt-1">{venture.idea}</dd>
+      {nextAction && (
+        <section className="mt-8 rounded-xl border border-primary/30 bg-tint p-5">
+          <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            Your next best action
+          </p>
+          <h2 className="mt-1 text-xl font-semibold">{nextAction.title}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">Why: </span>
+            {nextAction.why}
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">
+              Estimated time:{" "}
+            </span>
+            about {nextAction.minutes} minutes
+          </p>
+          <Button className="mt-4" asChild>
+            <Link href={nextAction.href}>{nextAction.cta}</Link>
+          </Button>
+        </section>
+      )}
+
+      <section className="mt-8 rounded-xl border border-border p-5">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-lg font-semibold">Venture progress</h2>
+          <span className="text-2xl font-bold text-primary">
+            {progress.percent}%
+          </span>
         </div>
-        {venture.problem && (
-          <div>
-            <dt className="text-sm font-medium text-muted-foreground">
-              Problem
-            </dt>
-            <dd className="mt-1">{venture.problem}</dd>
-          </div>
-        )}
-        {venture.target_customer && (
-          <div>
-            <dt className="text-sm font-medium text-muted-foreground">
-              Target customer
-            </dt>
-            <dd className="mt-1">{venture.target_customer}</dd>
-          </div>
-        )}
-      </dl>
-
-      <div className="mt-10">
-        <h2 className="text-lg font-semibold">Stage</h2>
-        <ol className="mt-3 flex flex-wrap gap-2">
-          {STAGES.map((stage, i) => (
-            <li
-              key={stage}
-              className={cn(
-                "rounded-full border px-3 py-1 text-sm capitalize",
-                stage === venture.current_stage
-                  ? "border-primary bg-primary font-medium text-primary-foreground"
-                  : i < currentIndex
-                    ? "border-primary/40 text-foreground"
-                    : "border-border text-muted-foreground",
-              )}
-            >
-              {i + 1}. {stage}
+        <Bar percent={progress.percent} className="mt-3 h-3" />
+        <p className="mt-2 text-xs text-muted-foreground">
+          Lessons and tasks can only take you to 60%. The rest has to come from
+          real evidence: interviews, tested hypotheses, and competitors.
+        </p>
+        <ul className="mt-4 grid gap-3 sm:grid-cols-3">
+          {progress.parts.map((part) => (
+            <li key={part.label}>
+              <div className="flex justify-between text-sm">
+                <span>{part.label}</span>
+                <span className="text-muted-foreground">{part.percent}%</span>
+              </div>
+              <Bar percent={part.percent} className="mt-1" />
             </li>
           ))}
-        </ol>
-        {!allDone && nextStageName && (
-          <p className="mt-3 text-sm text-muted-foreground">
-            Pass every lesson in{" "}
-            <span className="font-medium capitalize text-foreground">
-              {venture.current_stage}
-            </span>{" "}
-            ({currentStageDone} of {currentStageLessons.length} done) to move up
-            to{" "}
-            <span className="font-medium capitalize text-foreground">
-              {nextStageName}
-            </span>
-            .
-          </p>
-        )}
-      </div>
+        </ul>
 
-      <div className="mt-12">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold">Your lessons</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {passedSlugs.size} of {lessons.length} complete. These were chosen
-              for a {ventureTypeLabel(venture.venture_type).toLowerCase()}.
-            </p>
-          </div>
-          {upNext && (
-            <Button asChild>
-              <Link href={`/ventures/${id}/lessons/${upNext.slug}`}>
-                {passedSlugs.size === 0 ? "Start learning" : "Continue"}
-              </Link>
-            </Button>
-          )}
-        </div>
-
-        {allDone && (
-          <p className="mt-4 rounded-lg border border-primary bg-primary/5 p-4 text-sm font-medium">
-            You have completed every lesson for this venture.
-          </p>
-        )}
-
-        <div className="mt-6 flex flex-col gap-8">
+        <h3 className="mt-6 text-sm font-semibold">Your roadmap</h3>
+        <ol className="mt-3 flex flex-col gap-1.5">
           {STAGES.map((stage, i) => {
-            const stageLessons = lessons.filter((l) => l.stage === stage);
-            if (stageLessons.length === 0) return null;
-            const locked = i > currentIndex;
+            const s = stageInfo(venture.venture_type, stage);
+            const state =
+              i < currentIndex
+                ? "done"
+                : i === currentIndex
+                  ? "current"
+                  : "next";
             return (
-              <section key={stage}>
-                <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                  <span className="capitalize">
-                    {i + 1}. {stage}
+              <li
+                key={stage}
+                className={cn(
+                  "flex items-start gap-3 rounded-lg px-3 py-2 text-sm",
+                  state === "current" && "bg-secondary",
+                  state === "next" && "text-muted-foreground",
+                )}
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border text-xs",
+                    state === "done" &&
+                      "border-primary bg-primary text-primary-foreground",
+                    state === "current" && "border-primary text-primary",
+                  )}
+                >
+                  {state === "done" ? "✓" : state === "current" ? "→" : ""}
+                </span>
+                <span>
+                  <span
+                    className={cn(
+                      "font-medium",
+                      state !== "next" && "text-foreground",
+                    )}
+                  >
+                    {s.name}
                   </span>
-                  {locked && <Badge variant="outline">Locked</Badge>}
-                </h3>
-                <ul className="mt-2 flex flex-col gap-1.5">
-                  {stageLessons.map((lesson) => {
-                    const done = passedSlugs.has(lesson.slug);
-                    const row = (
-                      <>
-                        <span
-                          aria-hidden
-                          className={cn(
-                            "flex size-5 shrink-0 items-center justify-center rounded-full border text-xs",
-                            done
-                              ? "border-primary bg-primary text-primary-foreground"
-                              : "border-border",
-                          )}
-                        >
-                          {done ? "✓" : ""}
-                        </span>
-                        <span className="flex-1">
-                          <span className="block font-medium">
-                            {lesson.title}
-                          </span>
-                          <span className="block text-sm text-muted-foreground">
-                            {lesson.summary}
-                          </span>
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {lesson.minutes} min
-                        </span>
-                      </>
-                    );
-                    return (
-                      <li key={lesson.slug}>
-                        {locked ? (
-                          <div className="flex items-center gap-3 rounded-lg border border-border px-3 py-2.5 opacity-50">
-                            {row}
-                          </div>
-                        ) : (
-                          <Link
-                            href={`/ventures/${id}/lessons/${lesson.slug}`}
-                            className="flex items-center gap-3 rounded-lg border border-border px-3 py-2.5 transition-colors hover:bg-accent/40"
-                          >
-                            {row}
-                          </Link>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
+                  {state === "current" && (
+                    <span className="block text-muted-foreground">
+                      {s.goal}
+                    </span>
+                  )}
+                </span>
+              </li>
             );
           })}
+        </ol>
+      </section>
+
+      <section className="mt-8 rounded-xl border border-border p-5">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-lg font-semibold">Venture health</h2>
+          <span className="text-2xl font-bold text-primary">
+            {health.overall}/100
+          </span>
         </div>
-      </div>
+        <ul className="mt-4 flex flex-col gap-3">
+          {health.categories.map((c) => (
+            <li key={c.id}>
+              <div className="flex justify-between text-sm">
+                <span>{c.label}</span>
+                <span className="text-muted-foreground">{c.score}</span>
+              </div>
+              <Bar percent={c.score} className="mt-1" />
+            </li>
+          ))}
+        </ul>
+        <div className="mt-5 rounded-lg bg-tint p-4 text-sm">
+          <p>
+            <span className="font-semibold">Biggest weakness: </span>
+            {health.weakest.label}
+          </p>
+          <p className="mt-1 text-muted-foreground">{health.weakest.tip}</p>
+        </div>
+      </section>
+
+      {actions.length > 1 && (
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold">Also worth doing</h2>
+          <ul className="mt-3 flex flex-col gap-2">
+            {actions.slice(1, 5).map((a) => (
+              <li key={a.title}>
+                <Link
+                  href={a.href}
+                  className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5 transition-colors hover:bg-accent/40"
+                >
+                  <span>
+                    <span className="block font-medium">{a.title}</span>
+                    <span className="block text-sm text-muted-foreground">
+                      {a.why}
+                    </span>
+                  </span>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    ~{a.minutes} min
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

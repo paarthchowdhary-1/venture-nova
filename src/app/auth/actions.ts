@@ -74,3 +74,74 @@ export async function signOut() {
   await supabase.auth.signOut();
   redirect("/");
 }
+
+const emailSchema = z.object({
+  email: z.string().trim().email("Enter a valid email address."),
+});
+
+export async function requestPasswordReset(
+  _prev: AuthState,
+  formData: FormData,
+): Promise<AuthState> {
+  const parsed = emailSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message };
+  }
+
+  const requestHeaders = await headers();
+  const origin =
+    requestHeaders.get("origin") ?? `https://${requestHeaders.get("host")}`;
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(
+    parsed.data.email,
+    { redirectTo: `${origin}/auth/callback?next=/reset-password` },
+  );
+  if (error?.status === 429) {
+    return { error: "Please wait a minute before asking for another link." };
+  }
+
+  return {
+    message:
+      "If an account exists for that email, we've sent a link to reset your password.",
+  };
+}
+
+const newPasswordSchema = z
+  .object({
+    password: credentialsSchema.shape.password,
+    confirm: z.string(),
+  })
+  .refine((v) => v.password === v.confirm, {
+    message: "Those passwords don't match.",
+    path: ["confirm"],
+  });
+
+export async function updatePassword(
+  _prev: AuthState,
+  formData: FormData,
+): Promise<AuthState> {
+  const parsed = newPasswordSchema.safeParse({
+    password: formData.get("password"),
+    confirm: formData.get("confirm"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "That reset link has expired. Please request a new one." };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: parsed.data.password,
+  });
+  if (error) {
+    return { error: error.message };
+  }
+  redirect("/dashboard");
+}

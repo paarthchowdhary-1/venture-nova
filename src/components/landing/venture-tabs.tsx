@@ -67,7 +67,7 @@ export function VentureTabs() {
                 <li key={area} className="flex items-start gap-2 text-sm">
                   <span
                     aria-hidden
-                    className="mt-1 size-1.5 shrink-0 rounded-full bg-primary"
+                    className="mt-1.5 size-2 shrink-0 rounded-full bg-warm"
                   />
                   <span>{area}</span>
                 </li>

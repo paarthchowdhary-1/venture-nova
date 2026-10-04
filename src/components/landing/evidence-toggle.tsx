@@ -15,7 +15,7 @@ export function EvidenceToggle() {
 
   return (
     <div className="w-full max-w-md">
-      <div className="mx-auto flex w-fit rounded-lg bg-muted p-1">
+      <div className="mx-auto flex w-fit rounded-lg bg-secondary p-1">
         <button
           type="button"
           onClick={() => setView("activity")}
@@ -49,8 +49,8 @@ export function EvidenceToggle() {
             <p className="mt-1 text-sm text-muted-foreground">
               Lessons completed
             </p>
-            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-muted">
-              <div className="h-full w-[83%] rounded-full bg-primary" />
+            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-secondary">
+              <div className="h-full w-[83%] rounded-full bg-warm" />
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
               Looks great. Tells you almost nothing about the venture.

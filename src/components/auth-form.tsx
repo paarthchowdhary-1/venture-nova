@@ -70,6 +70,14 @@ export function AuthForm({
             minLength={8}
             autoComplete={c.autoComplete}
           />
+          {mode === "login" && (
+            <Link
+              href="/forgot-password"
+              className="self-end text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
+              Forgot your password?
+            </Link>
+          )}
         </div>
         <Button type="submit" size="lg" disabled={pending}>
           {pending ? c.pending : c.submit}

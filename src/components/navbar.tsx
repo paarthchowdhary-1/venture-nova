@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { signOut } from "~/app/auth/actions";
+import { LogoMark } from "~/components/logo";
 import { Button } from "~/components/ui/button";
 import { createClient } from "~/lib/supabase/server";
 
@@ -12,7 +13,11 @@ export async function Navbar() {
   return (
     <nav className="border-b border-border bg-background">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-        <Link href="/" className="font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-semibold tracking-tight"
+        >
+          <LogoMark className="size-7" />
           VentureNova
         </Link>
         <div className="flex items-center gap-4 sm:gap-6">
@@ -23,6 +28,12 @@ export async function Navbar() {
                 className="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 Dashboard
+              </Link>
+              <Link
+                href="/portfolio"
+                className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
+              >
+                Portfolio
               </Link>
               <form action={signOut}>
                 <Button
@@ -38,7 +49,7 @@ export async function Navbar() {
           ) : (
             <>
               <Link
-                href="/#how-it-works"
+                href="/how-it-works"
                 className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
               >
                 How it works

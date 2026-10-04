@@ -154,7 +154,7 @@ export async function submitQuiz(
     nextSlug = nextLesson(lessons, passedSlugs, advancedTo ?? stage)?.slug;
   }
 
-  revalidatePath(`/ventures/${ventureId}`);
+  revalidatePath(`/ventures/${ventureId}`, "layout");
   revalidatePath("/dashboard");
 
   return {

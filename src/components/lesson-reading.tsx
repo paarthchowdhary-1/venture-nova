@@ -74,7 +74,7 @@ export function LessonReading({ text }: { text: string }) {
       blocks.push({
         id,
         node: (
-          <blockquote className="rounded-lg border-l-4 border-primary bg-muted/50 px-4 py-3 text-foreground">
+          <blockquote className="rounded-lg border-l-4 border-primary bg-tint px-4 py-3 text-foreground">
             <Inline text={lines.map((l) => l.replace(/^> ?/, "")).join(" ")} />
           </blockquote>
         ),
