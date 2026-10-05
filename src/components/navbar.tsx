@@ -22,6 +22,11 @@ export async function Navbar() {
         <div className="flex items-center gap-3 sm:gap-6">
           {user ? (
             <>
+              {user.name && (
+                <span className="hidden max-w-32 truncate text-sm font-medium text-foreground sm:block">
+                  Hi, {user.name}
+                </span>
+              )}
               <Link
                 href="/dashboard"
                 className="text-sm text-muted-foreground transition-colors hover:text-foreground"

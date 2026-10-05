@@ -4,6 +4,7 @@ import { StartCta } from "~/components/landing/start-cta";
 import { VentureTabs } from "~/components/landing/venture-tabs";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { getSessionUser } from "~/lib/session";
 
 const loop = [
   { step: "Learn", emoji: "📚", tone: "bg-sky-soft text-sky-ink" },
@@ -48,7 +49,8 @@ function Floaty({
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const user = await getSessionUser();
   return (
     <div className="flex flex-col">
       <section className="bg-hero relative isolate overflow-hidden">
@@ -71,8 +73,16 @@ export default function Home() {
 
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-5 px-4 pt-14 pb-14 text-center sm:gap-6 sm:pt-28 sm:pb-24">
           <Badge className="animate-rise gap-1.5 border-warm/40 bg-sun-soft px-3 py-1 text-warm-foreground">
-            <span aria-hidden>⚡</span> For young entrepreneurs, ages
-            12&ndash;18
+            {user?.name ? (
+              <>
+                <span aria-hidden>👋</span> Welcome back, {user.name}!
+              </>
+            ) : (
+              <>
+                <span aria-hidden>⚡</span> For young entrepreneurs, ages
+                12&ndash;18
+              </>
+            )}
           </Badge>
           <h1 className="animate-rise max-w-5xl text-4xl font-extrabold tracking-tight text-balance [animation-delay:80ms] sm:text-6xl">
             You have an idea. <br className="hidden sm:block" />
@@ -88,7 +98,18 @@ export default function Home() {
             id="hero-cta"
             className="animate-rise scroll-mt-20 pt-2 [animation-delay:240ms]"
           >
-            <StartCta showSecondary />
+            {user ? (
+              <Button
+                asChild
+                size="lg"
+                variant="fun"
+                className="rounded-full px-8"
+              >
+                <Link href="/dashboard">Go to your dashboard &rarr;</Link>
+              </Button>
+            ) : (
+              <StartCta showSecondary />
+            )}
           </div>
           <ul className="animate-rise mt-2 flex flex-wrap justify-center gap-2 [animation-delay:320ms]">
             {perks.map((p) => (
@@ -198,9 +219,13 @@ export default function Home() {
             variant="warm"
             className="rounded-full px-8"
           >
-            <Link href="/signup">Start your venture &rarr;</Link>
+            <Link href={user ? "/dashboard" : "/signup"}>
+              {user ? "Go to your dashboard" : "Start your venture"} &rarr;
+            </Link>
           </Button>
-          <p className="text-sm text-primary-foreground/75">Free to start.</p>
+          {!user && (
+            <p className="text-sm text-primary-foreground/75">Free to start.</p>
+          )}
         </div>
       </section>
     </div>

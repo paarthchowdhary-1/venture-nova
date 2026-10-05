@@ -19,9 +19,15 @@ export const getSessionUser = cache(async () => {
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
   if (!claims?.sub) return null;
+  const meta = claims.user_metadata as { full_name?: unknown } | undefined;
+  const name =
+    typeof meta?.full_name === "string" && meta.full_name.trim()
+      ? meta.full_name.trim()
+      : null;
   return {
     id: claims.sub,
     email: typeof claims.email === "string" ? claims.email : null,
+    name,
   };
 });
 

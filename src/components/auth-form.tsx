@@ -35,6 +35,7 @@ export function AuthForm({
   mode: "login" | "signup";
   initialError?: string;
 }) {
+  const nameId = useId();
   const emailId = useId();
   const passwordId = useId();
   const c = copy[mode];
@@ -49,6 +50,20 @@ export function AuthForm({
         {c.title}
       </h1>
       <form action={formAction} className="flex flex-col gap-4">
+        {mode === "signup" && (
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor={nameId}>Your first name</Label>
+            <Input
+              id={nameId}
+              name="name"
+              type="text"
+              required
+              maxLength={50}
+              autoComplete="given-name"
+              placeholder="Alex"
+            />
+          </div>
+        )}
         <div className="flex flex-col gap-1.5">
           <Label htmlFor={emailId}>Email</Label>
           <Input

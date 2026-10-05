@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -14,6 +15,12 @@ const credentialsSchema = z.object({
     .min(8, "Password must be at least 8 characters.")
     .max(72, "Password must be 72 characters or fewer."),
 });
+
+const nameSchema = z
+  .string()
+  .trim()
+  .min(1, "Tell us your first name.")
+  .max(50, "Keep your name under 50 characters.");
 
 function readCredentials(formData: FormData) {
   return credentialsSchema.safeParse({
@@ -30,6 +37,10 @@ export async function signUp(
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message };
   }
+  const name = nameSchema.safeParse(formData.get("name") ?? "");
+  if (!name.success) {
+    return { error: name.error.issues[0]?.message };
+  }
 
   const requestHeaders = await headers();
   const origin =
@@ -38,7 +49,10 @@ export async function signUp(
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     ...parsed.data,
-    options: { emailRedirectTo: `${origin}/auth/callback` },
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+      data: { full_name: name.data },
+    },
   });
 
   if (error) {
@@ -144,4 +158,32 @@ export async function updatePassword(
     return { error: error.message };
   }
   redirect("/dashboard");
+}
+
+/** Lets an existing account (made before names were collected) add its name. */
+export async function saveName(
+  _prev: AuthState,
+  formData: FormData,
+): Promise<AuthState> {
+  const name = nameSchema.safeParse(formData.get("name") ?? "");
+  if (!name.success) {
+    return { error: name.error.issues[0]?.message };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { error } = await supabase.auth.updateUser({
+    data: { full_name: name.data },
+  });
+  if (error) {
+    return { error: "Couldn't save your name. Please try again." };
+  }
+  // The name is read from the login token, so refresh it to pick up the change.
+  await supabase.auth.refreshSession();
+  revalidatePath("/", "layout");
+  return { message: "Saved." };
 }

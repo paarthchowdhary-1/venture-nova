@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { NameForm } from "~/components/name-form";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar } from "~/components/ui/progress";
@@ -34,7 +35,14 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
-      <div className="flex items-center justify-between gap-4">
+      {user.name ? (
+        <p className="animate-rise text-lg font-semibold text-primary">
+          Welcome, {user.name} <span aria-hidden>👋</span>
+        </p>
+      ) : (
+        <NameForm />
+      )}
+      <div className="mt-2 flex items-center justify-between gap-4">
         <h1 className="text-3xl font-extrabold tracking-tight">
           Your <span className="text-gradient">ventures</span>
         </h1>
