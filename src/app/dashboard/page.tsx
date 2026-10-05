@@ -116,7 +116,10 @@ export default async function DashboardPage() {
                   {next && (
                     <div className="mt-auto rounded-xl bg-tint p-3 transition-colors group-hover:bg-secondary">
                       <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-                        <span aria-hidden>🎯</span> Next best action
+                        <span aria-hidden className="mr-1">
+                          🎯
+                        </span>
+                        Next best action
                       </p>
                       <p className="mt-1 text-sm font-medium">{next.title}</p>
                     </div>

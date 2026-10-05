@@ -103,7 +103,10 @@ export default async function VenturePage({
         <section className="bg-brand-gradient mt-8 rounded-2xl p-[2px] shadow-lg shadow-primary/20">
           <div className="rounded-[calc(var(--radius-xl)+0.0625rem)] bg-card p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-              <span aria-hidden>🎯</span> Your next best action
+              <span aria-hidden className="mr-1">
+                🎯
+              </span>
+              Your next best action
             </p>
             <h2 className="mt-1 text-xl font-semibold">{nextAction.title}</h2>
             <p className="mt-2 text-sm text-muted-foreground">

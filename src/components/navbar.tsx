@@ -14,10 +14,12 @@ export async function Navbar() {
           href="/"
           className="flex items-center gap-2 font-semibold tracking-tight"
         >
-          <LogoMark className="size-7" />
-          VentureNova
+          <LogoMark className="size-7 shrink-0" />
+          <span className={isAdmin ? "max-[420px]:hidden" : undefined}>
+            VentureNova
+          </span>
         </Link>
-        <div className="flex items-center gap-4 sm:gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           {user ? (
             <>
               <Link
