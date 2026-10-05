@@ -74,8 +74,19 @@ export default function PrivacyPage() {
       <h2>Where it&apos;s stored</h2>
       <p>
         Your data is stored with our database and sign-in provider, Supabase,
-        and the website is hosted on Vercel. Access to your workspace is
-        restricted to your own account.
+        and the website is hosted on Vercel. Your workspace is private to your
+        own account, with one exception described next.
+      </p>
+
+      <h2>Who at VentureNova can see your work</h2>
+      <p>
+        A small number of VentureNova administrators can view site-wide
+        statistics and account details such as your email address and when you
+        joined. They can also open a founder&apos;s workspace, including notes,
+        interviews, evidence, and AI Coach conversations. They do this only to
+        help you with a problem, to keep young founders safe, and to fix bugs.
+        Administrators can only look and cannot change your work, and every time
+        one opens a workspace it is recorded in an access log.
       </p>
 
       <h2>Your choices</h2>

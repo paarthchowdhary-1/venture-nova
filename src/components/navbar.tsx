@@ -9,6 +9,7 @@ export async function Navbar() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const isAdmin = user ? (await supabase.rpc("is_admin")).data === true : false;
 
   return (
     <nav className="border-b border-border bg-background">
@@ -29,6 +30,14 @@ export async function Navbar() {
               >
                 Dashboard
               </Link>
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="text-sm font-medium text-primary transition-colors hover:underline"
+                >
+                  Admin
+                </Link>
+              )}
               <Link
                 href="/portfolio"
                 className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
