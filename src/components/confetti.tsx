@@ -22,19 +22,35 @@ type Piece = {
   delay: number;
 };
 
+/**
+ * A small seeded random generator. Using the same numbers on the server and in
+ * the browser keeps the confetti identical in both, so React never sees a
+ * mismatch when a quiz result is rendered on the server first.
+ */
+function seeded(seed: number) {
+  let t = seed;
+  return () => {
+    t = (t + 0x6d2b79f5) | 0;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 function makePieces(count: number): Piece[] {
+  const random = seeded(20261005);
   return Array.from({ length: count }, (_, i) => {
-    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-    const distance = 140 + Math.random() * 260;
+    const angle = (Math.PI * 2 * i) / count + random() * 0.5;
+    const distance = 140 + random() * 260;
     return {
       id: `c${i}`,
       color: COLORS[i % COLORS.length],
-      dx: Math.cos(angle) * distance,
-      dy: Math.sin(angle) * distance + 120,
-      rot: (Math.random() - 0.5) * 900,
-      size: 7 + Math.random() * 7,
+      dx: Math.round(Math.cos(angle) * distance),
+      dy: Math.round(Math.sin(angle) * distance + 120),
+      rot: Math.round((random() - 0.5) * 900),
+      size: Math.round(7 + random() * 7),
       round: i % 3 === 0,
-      delay: Math.random() * 120,
+      delay: Math.round(random() * 120),
     };
   });
 }
