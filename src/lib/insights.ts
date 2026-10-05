@@ -581,6 +581,13 @@ export function achievements(s: Snapshot) {
     out.push(
       `Logged ${s.decisions.length} decision${s.decisions.length === 1 ? "" : "s"}`,
     );
-  if (s.launchTotal > 0 && s.launchDone === s.launchTotal) out.push("Launched");
+  // A launch badge only counts once the venture has actually reached the testing
+  // stage, so ticking every box early can't claim a launch that hasn't happened.
+  if (
+    s.launchTotal > 0 &&
+    s.launchDone === s.launchTotal &&
+    stageIdx(s.venture.current_stage) >= stageIdx("testing")
+  )
+    out.push("Launched");
   return out;
 }

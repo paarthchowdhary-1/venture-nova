@@ -70,6 +70,11 @@ export function AuthForm({
             minLength={8}
             autoComplete={c.autoComplete}
           />
+          {mode === "signup" && (
+            <p className="text-xs text-muted-foreground">
+              At least 8 characters. Longer is stronger.
+            </p>
+          )}
           {mode === "login" && (
             <Link
               href="/forgot-password"

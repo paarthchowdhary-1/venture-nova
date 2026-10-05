@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { requireAdmin } from "~/lib/admin";
 
 export const metadata: Metadata = {
-  title: "Admin | VentureNova",
+  title: "Admin",
   robots: { index: false, follow: false },
 };
 

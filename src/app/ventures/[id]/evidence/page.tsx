@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ConfirmButton } from "~/components/confirm-button";
 import { EntryForm, type Field } from "~/components/entry-form";
 import { claimConfidence } from "~/lib/insights";
@@ -58,6 +59,11 @@ const confidenceStyle = {
   medium: "bg-warm/25 text-warm-foreground",
   high: "bg-primary/10 text-primary",
 } as const;
+
+export const metadata: Metadata = {
+  title: "Evidence Vault",
+  robots: { index: false, follow: false },
+};
 
 export default async function EvidencePage({
   params,

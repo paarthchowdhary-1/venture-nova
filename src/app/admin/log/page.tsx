@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import { type AdminLogRow, formatDateTime, requireAdmin } from "~/lib/admin";
 
 const LABELS: Record<string, string> = {
   view_user: "Opened a user",
   view_venture: "Opened a venture's content",
   view_coach: "Read a coach chat",
+};
+
+export const metadata: Metadata = {
+  title: "Access log",
+  robots: { index: false, follow: false },
 };
 
 export default async function AdminLogPage() {

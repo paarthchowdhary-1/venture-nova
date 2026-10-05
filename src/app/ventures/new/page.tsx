@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { VentureForm } from "~/components/venture-form";
 import { getSessionUser } from "~/lib/session";
 import { createVenture } from "../actions";
+
+export const metadata: Metadata = {
+  title: "Start a venture",
+  robots: { index: false, follow: false },
+};
 
 export default async function NewVenturePage() {
   const user = await getSessionUser();

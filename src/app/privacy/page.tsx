@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage } from "~/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy | VentureNova",
+  title: "Privacy",
   description: "What VentureNova collects, why, and the choices you have.",
 };
 

@@ -1,19 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { ProgressBar } from "~/components/ui/progress";
 import { stageInfo } from "~/content/roadmaps";
 import { recommendedActions, ventureProgress } from "~/lib/insights";
 import { getSessionUser, getSupabase } from "~/lib/session";
+import { cn } from "~/lib/utils";
+import { typeStyle } from "~/lib/venture-style";
 import { ventureTypeLabel } from "~/lib/ventures";
 import { loadWorkspace } from "~/lib/workspace";
+
+export const metadata: Metadata = {
+  title: "Your ventures",
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardPage() {
   const supabase = await getSupabase();
@@ -33,9 +35,11 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">Your ventures</h1>
-        <Button asChild>
-          <Link href="/ventures/new">New venture</Link>
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          Your <span className="text-gradient">ventures</span>
+        </h1>
+        <Button asChild variant="fun">
+          <Link href="/ventures/new">+ New venture</Link>
         </Button>
       </div>
 
@@ -55,40 +59,69 @@ export default async function DashboardPage() {
           {workspaces.map(({ snapshot }) => {
             const venture = snapshot.venture;
             const next = recommendedActions(snapshot)[0];
+            const style = typeStyle(venture.venture_type);
+            const percent = ventureProgress(snapshot).percent;
             return (
-              <Link key={venture.id} href={`/ventures/${venture.id}`}>
-                <Card className="h-full transition-colors hover:bg-accent/40">
-                  <CardHeader>
-                    <CardTitle>{venture.name}</CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {venture.idea}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex flex-col gap-4">
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">
-                        {ventureTypeLabel(venture.venture_type)}
-                      </Badge>
-                      <Badge variant="outline">
-                        {
-                          stageInfo(venture.venture_type, venture.current_stage)
-                            .name
-                        }
-                      </Badge>
-                      <Badge variant="outline">
-                        {ventureProgress(snapshot).percent}% progress
-                      </Badge>
+              <Link
+                key={venture.id}
+                href={`/ventures/${venture.id}`}
+                className="group card-pop relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+              >
+                <div
+                  aria-hidden
+                  className={cn("h-1.5 w-full bg-linear-to-r", style.strip)}
+                />
+                <div className="flex flex-1 flex-col gap-4 p-5">
+                  <div className="flex items-start gap-3">
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "flex size-11 shrink-0 items-center justify-center rounded-xl text-xl",
+                        style.soft,
+                      )}
+                    >
+                      {style.emoji}
+                    </span>
+                    <div className="min-w-0">
+                      <h2 className="truncate text-lg font-bold">
+                        {venture.name}
+                      </h2>
+                      <p className="line-clamp-2 text-sm text-muted-foreground">
+                        {venture.idea}
+                      </p>
                     </div>
-                    {next && (
-                      <div className="rounded-lg bg-tint p-3">
-                        <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-                          Next best action
-                        </p>
-                        <p className="mt-1 text-sm font-medium">{next.title}</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className={cn(style.soft, style.ink)}>
+                      {ventureTypeLabel(venture.venture_type)}
+                    </Badge>
+                    <Badge variant="outline">
+                      {
+                        stageInfo(venture.venture_type, venture.current_stage)
+                          .name
+                      }
+                    </Badge>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="text-primary">{percent}%</span>
+                    </div>
+                    <ProgressBar
+                      percent={percent}
+                      className="mt-1.5"
+                      label={`${venture.name} progress`}
+                    />
+                  </div>
+                  {next && (
+                    <div className="mt-auto rounded-xl bg-tint p-3 transition-colors group-hover:bg-secondary">
+                      <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                        <span aria-hidden>🎯</span> Next best action
+                      </p>
+                      <p className="mt-1 text-sm font-medium">{next.title}</p>
+                    </div>
+                  )}
+                </div>
               </Link>
             );
           })}

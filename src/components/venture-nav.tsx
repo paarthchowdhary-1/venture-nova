@@ -55,7 +55,7 @@ export function VentureNav({ id }: { id: string }) {
             className={cn(
               "shrink-0 rounded-full px-3 py-1.5 text-sm transition-colors",
               active === tab.slug
-                ? "bg-primary font-medium text-primary-foreground"
+                ? "bg-brand-gradient font-semibold text-primary-foreground shadow-md"
                 : "text-muted-foreground hover:bg-secondary hover:text-foreground",
             )}
           >

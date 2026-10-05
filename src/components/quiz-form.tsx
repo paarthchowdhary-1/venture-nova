@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { type QuizState, submitQuiz } from "~/app/ventures/lesson-actions";
+import { Confetti } from "~/components/confetti";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -43,16 +44,18 @@ function QuizAttempt({
   if (result) {
     return (
       <div className="flex flex-col gap-6">
+        {result.passed && <Confetti />}
         <div
           role="status"
           className={cn(
-            "rounded-xl border p-4",
+            "rounded-2xl border p-5",
             result.passed
-              ? "border-primary bg-primary/5"
+              ? "border-mint/50 bg-linear-to-br from-mint-soft to-sky-soft animate-pop"
               : "border-destructive/40 bg-destructive/5",
           )}
         >
-          <p className="font-semibold">
+          <p className="text-lg font-bold">
+            <span aria-hidden>{result.passed ? "🎉 " : "💪 "}</span>
             You got {result.score} of {result.total}.{" "}
             {result.passed ? "Nice work, you passed!" : "Not quite yet."}
           </p>
@@ -62,8 +65,9 @@ function QuizAttempt({
               : `You need ${result.needed} of ${result.total} to pass. Look back over the reading, then try again.`}
           </p>
           {result.advancedTo && (
-            <p className="mt-2 text-sm font-medium capitalize">
-              You moved up to the {result.advancedTo} stage!
+            <p className="bg-brand-gradient mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold text-primary-foreground capitalize shadow-md">
+              <span aria-hidden>🚀</span> Level up! You moved up to the{" "}
+              {result.advancedTo} stage
             </p>
           )}
           {result.passed && result.allDone && (

@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { AchievementList } from "~/components/achievements";
 import { Button } from "~/components/ui/button";
 import { achievements, ventureProgress } from "~/lib/insights";
 import { requireWorkspace } from "~/lib/workspace-page";
 import { setSharing } from "../../workspace-actions";
+
+export const metadata: Metadata = {
+  title: "Share your portfolio",
+  robots: { index: false, follow: false },
+};
 
 export default async function SharePage({
   params,
@@ -34,16 +41,7 @@ export default async function SharePage({
           {snapshot.venture.name} &middot; {progress}% progress
         </p>
         {list.length > 0 ? (
-          <ul className="mt-4 flex flex-col gap-1.5 text-sm">
-            {list.map((a) => (
-              <li key={a} className="flex gap-2">
-                <span aria-hidden className="text-primary">
-                  &#10003;
-                </span>
-                {a}
-              </li>
-            ))}
-          </ul>
+          <AchievementList items={list} />
         ) : (
           <p className="mt-4 text-sm text-muted-foreground">
             Your achievements will appear here as you do the work.

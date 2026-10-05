@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AchievementList } from "~/components/achievements";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { stageInfo } from "~/content/roadmaps";
@@ -9,7 +10,7 @@ import { env } from "~/env";
 import { ventureTypeLabel } from "~/lib/ventures";
 
 export const metadata: Metadata = {
-  title: "Founder portfolio | VentureNova",
+  title: "Founder portfolio",
   robots: { index: false, follow: false },
 };
 
@@ -75,19 +76,7 @@ export default async function PublicVenturePage({
       {summary.achievements && summary.achievements.length > 0 && (
         <section className="mt-8">
           <h2 className="text-lg font-semibold">Achievements</h2>
-          <ul className="mt-3 flex flex-col gap-2">
-            {summary.achievements.map((a) => (
-              <li
-                key={a}
-                className="flex gap-2 rounded-lg bg-tint px-3 py-2 text-sm"
-              >
-                <span aria-hidden className="text-primary">
-                  &#10003;
-                </span>
-                {a}
-              </li>
-            ))}
-          </ul>
+          <AchievementList items={summary.achievements} />
         </section>
       )}
 

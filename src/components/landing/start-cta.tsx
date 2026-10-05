@@ -9,7 +9,7 @@ export function StartCta({
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="flex flex-col items-center gap-3 sm:flex-row">
-        <Button asChild size="lg" className="rounded-full px-8">
+        <Button asChild size="lg" variant="fun" className="rounded-full px-8">
           <Link href="/signup">Start your venture &rarr;</Link>
         </Button>
         {showSecondary && (
@@ -17,7 +17,7 @@ export function StartCta({
             asChild
             size="lg"
             variant="outline"
-            className="rounded-full px-8"
+            className="rounded-full border-primary/30 bg-white/70 px-8 backdrop-blur hover:bg-white"
           >
             <Link href="/how-it-works">See how it works</Link>
           </Button>

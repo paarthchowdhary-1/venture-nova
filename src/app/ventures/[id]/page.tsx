@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { ProgressBar, type ProgressTone } from "~/components/ui/progress";
 import { stageIndex } from "~/content/lessons";
 import { stageInfo } from "~/content/roadmaps";
 import {
@@ -9,28 +11,28 @@ import {
   ventureProgress,
 } from "~/lib/insights";
 import { cn } from "~/lib/utils";
+import { STAGE_EMOJI, typeStyle } from "~/lib/venture-style";
 import { STAGES, ventureTypeLabel } from "~/lib/ventures";
 import { requireWorkspace } from "~/lib/workspace-page";
 
-function Bar({ percent, className }: { percent: number; className?: string }) {
-  return (
-    <div
-      role="progressbar"
-      aria-valuenow={percent}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      className={cn(
-        "h-2 w-full overflow-hidden rounded-full bg-secondary",
-        className,
-      )}
-    >
-      <div
-        className="h-full rounded-full bg-primary"
-        style={{ width: `${Math.max(2, percent)}%` }}
-      />
-    </div>
-  );
-}
+const PART_TONE: Record<string, ProgressTone> = {
+  Lessons: "sky",
+  Tasks: "mint",
+  Evidence: "grape",
+};
+const HEALTH_TONES: ProgressTone[] = [
+  "brand",
+  "mint",
+  "coral",
+  "sky",
+  "grape",
+  "sun",
+];
+
+export const metadata: Metadata = {
+  title: "Venture overview",
+  robots: { index: false, follow: false },
+};
 
 export default async function VenturePage({
   params,
@@ -47,6 +49,7 @@ export default async function VenturePage({
   const health = ventureHealth(snapshot);
   const currentIndex = stageIndex(venture.current_stage);
   const info = stageInfo(venture.venture_type, venture.current_stage);
+  const style = typeStyle(venture.venture_type);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -56,50 +59,82 @@ export default async function VenturePage({
       >
         &larr; All ventures
       </Link>
-      <div className="mt-4 flex items-start justify-between gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">{venture.name}</h1>
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/ventures/${id}/edit`}>Edit</Link>
-        </Button>
-      </div>
-      <div className="mt-3 flex flex-wrap gap-2">
-        <Badge variant="secondary">
-          {ventureTypeLabel(venture.venture_type)}
-        </Badge>
-        <Badge variant="outline">Now: {info.name}</Badge>
-      </div>
-      <p className="mt-5 text-muted-foreground">{venture.idea}</p>
+      <header
+        className={cn(
+          "relative mt-4 overflow-hidden rounded-2xl border border-border p-5 sm:p-6",
+          style.soft,
+        )}
+      >
+        <div
+          aria-hidden
+          className={cn(
+            "absolute inset-x-0 top-0 h-1.5 bg-linear-to-r",
+            style.strip,
+          )}
+        />
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden
+              className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/80 text-2xl shadow-sm"
+            >
+              {style.emoji}
+            </span>
+            <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+              {venture.name}
+            </h1>
+          </div>
+          <Button variant="outline" size="sm" className="bg-white/70" asChild>
+            <Link href={`/ventures/${id}/edit`}>Edit</Link>
+          </Button>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Badge variant="secondary" className="bg-white/80">
+            {ventureTypeLabel(venture.venture_type)}
+          </Badge>
+          <Badge className="bg-primary text-primary-foreground">
+            Now: {info.name}
+          </Badge>
+        </div>
+        <p className="mt-4 text-foreground/80">{venture.idea}</p>
+      </header>
 
       {nextAction && (
-        <section className="mt-8 rounded-xl border border-primary/30 bg-tint p-5">
-          <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            Your next best action
-          </p>
-          <h2 className="mt-1 text-xl font-semibold">{nextAction.title}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">Why: </span>
-            {nextAction.why}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">
-              Estimated time:{" "}
-            </span>
-            about {nextAction.minutes} minutes
-          </p>
-          <Button className="mt-4" asChild>
-            <Link href={nextAction.href}>{nextAction.cta}</Link>
-          </Button>
+        <section className="bg-brand-gradient mt-8 rounded-2xl p-[2px] shadow-lg shadow-primary/20">
+          <div className="rounded-[calc(var(--radius-xl)+0.0625rem)] bg-card p-5">
+            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+              <span aria-hidden>🎯</span> Your next best action
+            </p>
+            <h2 className="mt-1 text-xl font-semibold">{nextAction.title}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">Why: </span>
+              {nextAction.why}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">
+                Estimated time:{" "}
+              </span>
+              about {nextAction.minutes} minutes
+            </p>
+            <Button className="mt-4" variant="fun" asChild>
+              <Link href={nextAction.href}>{nextAction.cta} &rarr;</Link>
+            </Button>
+          </div>
         </section>
       )}
 
-      <section className="mt-8 rounded-xl border border-border p-5">
+      <section className="mt-8 rounded-2xl border border-border p-5 shadow-sm">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="text-lg font-semibold">Venture progress</h2>
-          <span className="text-2xl font-bold text-primary">
+          <span className="text-gradient text-3xl font-extrabold">
             {progress.percent}%
           </span>
         </div>
-        <Bar percent={progress.percent} className="mt-3 h-3" />
+        <ProgressBar
+          percent={progress.percent}
+          className="mt-3 h-4"
+          label="Venture progress"
+        />
         <p className="mt-2 text-xs text-muted-foreground">
           Lessons and tasks can only take you to 60%. The rest has to come from
           real evidence: interviews, tested hypotheses, and competitors.
@@ -111,7 +146,12 @@ export default async function VenturePage({
                 <span>{part.label}</span>
                 <span className="text-muted-foreground">{part.percent}%</span>
               </div>
-              <Bar percent={part.percent} className="mt-1" />
+              <ProgressBar
+                percent={part.percent}
+                tone={PART_TONE[part.label] ?? "brand"}
+                className="mt-1"
+                label={part.label}
+              />
             </li>
           ))}
         </ul>
@@ -131,20 +171,20 @@ export default async function VenturePage({
                 key={stage}
                 className={cn(
                   "flex items-start gap-3 rounded-lg px-3 py-2 text-sm",
-                  state === "current" && "bg-secondary",
+                  state === "current" && "bg-secondary ring-1 ring-primary/30",
                   state === "next" && "text-muted-foreground",
                 )}
               >
                 <span
                   aria-hidden
                   className={cn(
-                    "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border text-xs",
-                    state === "done" &&
-                      "border-primary bg-primary text-primary-foreground",
-                    state === "current" && "border-primary text-primary",
+                    "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-sm",
+                    state === "done" && "bg-mint text-white",
+                    state === "current" && "bg-brand-gradient glow",
+                    state === "next" && "bg-muted grayscale",
                   )}
                 >
-                  {state === "done" ? "✓" : state === "current" ? "→" : ""}
+                  {state === "done" ? "✓" : STAGE_EMOJI[i]}
                 </span>
                 <span>
                   <span
@@ -167,21 +207,26 @@ export default async function VenturePage({
         </ol>
       </section>
 
-      <section className="mt-8 rounded-xl border border-border p-5">
+      <section className="mt-8 rounded-2xl border border-border p-5 shadow-sm">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="text-lg font-semibold">Venture health</h2>
-          <span className="text-2xl font-bold text-primary">
+          <span className="text-gradient text-3xl font-extrabold">
             {health.overall}/100
           </span>
         </div>
         <ul className="mt-4 flex flex-col gap-3">
-          {health.categories.map((c) => (
+          {health.categories.map((c, i) => (
             <li key={c.id}>
               <div className="flex justify-between text-sm">
                 <span>{c.label}</span>
                 <span className="text-muted-foreground">{c.score}</span>
               </div>
-              <Bar percent={c.score} className="mt-1" />
+              <ProgressBar
+                percent={c.score}
+                tone={HEALTH_TONES[i % HEALTH_TONES.length]}
+                className="mt-1"
+                label={c.label}
+              />
             </li>
           ))}
         </ul>

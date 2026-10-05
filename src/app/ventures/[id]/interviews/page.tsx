@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ConfirmButton } from "~/components/confirm-button";
 import { EntryForm, type Field } from "~/components/entry-form";
 import { Badge } from "~/components/ui/badge";
@@ -37,6 +38,11 @@ const fields: readonly Field[] = [
     placeholder: "I never know who to ask.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Customer interviews",
+  robots: { index: false, follow: false },
+};
 
 export default async function InterviewsPage({
   params,

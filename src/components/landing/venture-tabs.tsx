@@ -62,7 +62,7 @@ export function VentureTabs() {
           value={type.value}
           className="w-full max-w-xl"
         >
-          <div className="rounded-xl border border-border bg-card p-6 text-left">
+          <div className="animate-pop rounded-2xl border border-primary/15 bg-card p-6 text-left shadow-lg shadow-primary/10">
             <p className="text-sm font-medium text-muted-foreground">
               {type.intro}
             </p>
@@ -71,7 +71,7 @@ export function VentureTabs() {
                 <li key={area} className="flex items-start gap-2 text-sm">
                   <span
                     aria-hidden
-                    className="mt-1.5 size-2 shrink-0 rounded-full bg-warm"
+                    className="mt-1.5 size-2.5 shrink-0 rounded-full bg-brand-gradient"
                   />
                   <span>{area}</span>
                 </li>

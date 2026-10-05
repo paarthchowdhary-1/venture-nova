@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ConfirmButton } from "~/components/confirm-button";
 import { EntryForm, type Field } from "~/components/entry-form";
 import { StageNotice } from "~/components/stage-notice";
@@ -49,6 +50,11 @@ const fields: readonly Field[] = [
     ],
   },
 ];
+
+export const metadata: Metadata = {
+  title: "MVP Planner",
+  robots: { index: false, follow: false },
+};
 
 export default async function MvpPage({
   params,

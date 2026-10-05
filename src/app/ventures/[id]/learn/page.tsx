@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -6,6 +7,11 @@ import { stageInfo } from "~/content/roadmaps";
 import { cn } from "~/lib/utils";
 import { STAGES, ventureTypeLabel } from "~/lib/ventures";
 import { requireWorkspace } from "~/lib/workspace-page";
+
+export const metadata: Metadata = {
+  title: "Learn",
+  robots: { index: false, follow: false },
+};
 
 export default async function LearnPage({
   params,

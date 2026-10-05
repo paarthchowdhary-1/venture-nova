@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { DeleteVenture } from "~/components/delete-venture";
 import { VentureForm } from "~/components/venture-form";
 import { getSessionUser, getSupabase } from "~/lib/session";
 import { deleteVenture, updateVenture } from "../../actions";
+
+export const metadata: Metadata = {
+  title: "Edit venture",
+  robots: { index: false, follow: false },
+};
 
 export default async function EditVenturePage({
   params,

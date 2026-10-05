@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LegalPage } from "~/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "Terms | VentureNova",
+  title: "Terms",
   description: "The simple rules for using VentureNova.",
 };
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ConfirmButton } from "~/components/confirm-button";
 import { EntryForm, type Field } from "~/components/entry-form";
 import { PivotSuggester } from "~/components/pivot-suggester";
@@ -81,6 +82,11 @@ const verdictStyle = {
   needs_more: "bg-warm/25 text-warm-foreground",
   not_validated: "bg-destructive/10 text-destructive",
 } as const;
+
+export const metadata: Metadata = {
+  title: "Validation Lab",
+  robots: { index: false, follow: false },
+};
 
 export default async function ValidationPage({
   params,

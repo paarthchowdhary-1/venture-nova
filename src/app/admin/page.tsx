@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { stageInfo } from "~/content/roadmaps";
 import {
@@ -66,6 +67,11 @@ function MiniBars({
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Overview",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminPage({
   searchParams,

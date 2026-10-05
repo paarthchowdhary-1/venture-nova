@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ConfirmButton } from "~/components/confirm-button";
 import { EntryForm, type Field } from "~/components/entry-form";
 import { requireWorkspace } from "~/lib/workspace-page";
@@ -32,6 +33,11 @@ const fields: readonly Field[] = [
     help: "Defaults to today.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Decision Log",
+  robots: { index: false, follow: false },
+};
 
 export default async function DecisionsPage({
   params,

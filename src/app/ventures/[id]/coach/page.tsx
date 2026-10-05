@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import { CoachChat } from "~/components/coach-chat";
 import { ConfirmButton } from "~/components/confirm-button";
 import { aiConfigured } from "~/lib/ai";
 import { requireWorkspace } from "~/lib/workspace-page";
 import { clearCoachChat } from "../../ai-actions";
+
+export const metadata: Metadata = {
+  title: "AI Coach",
+  robots: { index: false, follow: false },
+};
 
 export default async function CoachPage({
   params,

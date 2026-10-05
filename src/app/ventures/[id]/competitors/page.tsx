@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ConfirmButton } from "~/components/confirm-button";
 import { EntryForm, type Field } from "~/components/entry-form";
 import { commonWeaknesses, competitorOpportunity } from "~/lib/insights";
@@ -33,6 +34,11 @@ const fields: readonly Field[] = [
     placeholder: "Adults",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Competitor Radar",
+  robots: { index: false, follow: false },
+};
 
 export default async function CompetitorsPage({
   params,

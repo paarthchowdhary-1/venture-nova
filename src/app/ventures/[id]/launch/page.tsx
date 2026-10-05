@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import { StageNotice } from "~/components/stage-notice";
 import { Button } from "~/components/ui/button";
 import { LAUNCH_ITEMS, LAUNCH_SECTIONS } from "~/content/launch";
 import { cn } from "~/lib/utils";
 import { requireWorkspace } from "~/lib/workspace-page";
 import { toggleLaunchItem } from "../../workspace-actions";
+
+export const metadata: Metadata = {
+  title: "Launch Center",
+  robots: { index: false, follow: false },
+};
 
 export default async function LaunchPage({
   params,

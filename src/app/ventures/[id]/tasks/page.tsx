@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { TaskCard } from "~/components/task-card";
 import { Badge } from "~/components/ui/badge";
@@ -7,6 +8,11 @@ import { TASK_CATALOG, TASK_HELP } from "~/content/tasks";
 import { recommendedActions } from "~/lib/insights";
 import { STAGES } from "~/lib/ventures";
 import { requireWorkspace } from "~/lib/workspace-page";
+
+export const metadata: Metadata = {
+  title: "Tasks",
+  robots: { index: false, follow: false },
+};
 
 export default async function TasksPage({
   params,

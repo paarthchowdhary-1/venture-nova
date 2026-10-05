@@ -1,3 +1,11 @@
 {
-  "regions": ["pdx1"]
+  "regions": ["pdx1"],
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "www.venturenova.org" }],
+      "destination": "https://venturenova.org/:path",
+      "permanent": true
+    }
+  ]
 }

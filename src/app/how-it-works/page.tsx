@@ -13,7 +13,7 @@ import {
 import { Separator } from "~/components/ui/separator";
 
 export const metadata: Metadata = {
-  title: "How it works | VentureNova",
+  title: "How it works",
   description:
     "How VentureNova turns an idea into a real venture: a loop of learning, doing, recording, analyzing, and adapting.",
 };
@@ -66,7 +66,7 @@ const comparisons = [
 
 export default function HowItWorksPage() {
   return (
-    <main className="flex flex-col">
+    <div className="flex flex-col">
       <section className="flex w-full flex-col items-center gap-4 bg-linear-to-b from-tint to-background px-4 pt-14 pb-12 text-center sm:pt-20 sm:pb-16">
         <Badge variant="secondary">How it works</Badge>
         <h1 className="max-w-3xl text-3xl font-bold tracking-tight text-balance sm:text-5xl">
@@ -196,6 +196,6 @@ export default function HowItWorksPage() {
         </h2>
         <StartCta />
       </section>
-    </main>
+    </div>
   );
 }

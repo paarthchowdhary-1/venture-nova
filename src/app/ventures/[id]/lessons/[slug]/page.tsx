@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { LessonReading } from "~/components/lesson-reading";
@@ -12,6 +13,11 @@ import {
   stageIndex,
 } from "~/content/lessons";
 import { getSessionUser, getSupabase } from "~/lib/session";
+
+export const metadata: Metadata = {
+  title: "Lesson",
+  robots: { index: false, follow: false },
+};
 
 export default async function LessonPage({
   params,
