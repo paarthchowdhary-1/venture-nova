@@ -33,8 +33,11 @@ export default async function AdminUserPage({
         &larr; All users
       </Link>
       <h1 className="mt-4 text-2xl font-bold tracking-tight break-all">
-        {user.email ?? "(no email)"}
+        {user.name ?? user.email ?? "(no email)"}
       </h1>
+      {user.name && (
+        <p className="text-sm text-muted-foreground break-all">{user.email}</p>
+      )}
       <dl className="mt-3 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
         <div>
           <dt className="text-muted-foreground">Joined</dt>

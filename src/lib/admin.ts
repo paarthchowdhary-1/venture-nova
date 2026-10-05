@@ -54,6 +54,7 @@ export type AdminDay = {
 export type AdminUserRow = {
   id: string;
   email: string | null;
+  name: string | null;
   created_at: string;
   last_sign_in_at: string | null;
   confirmed: boolean;
@@ -68,6 +69,7 @@ export type AdminUserRow = {
 export type AdminUserDetail = {
   id: string;
   email: string | null;
+  name: string | null;
   created_at: string;
   last_sign_in_at: string | null;
   confirmed: boolean;

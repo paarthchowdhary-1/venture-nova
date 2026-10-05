@@ -253,13 +253,13 @@ export default async function AdminPage({
           <h2 className="text-lg font-semibold">Users ({totalUsers})</h2>
           <form action="/admin" className="flex gap-2">
             <label htmlFor="admin-search" className="sr-only">
-              Search by email
+              Search by name or email
             </label>
             <input
               id="admin-search"
               name="q"
               defaultValue={search}
-              placeholder="Search by email"
+              placeholder="Search by name or email"
               className="h-9 w-56 rounded-md border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
             />
             <button
@@ -272,9 +272,10 @@ export default async function AdminPage({
         </div>
 
         <div className="mt-3 overflow-x-auto rounded-xl border border-border">
-          <table className="w-full min-w-[40rem] text-left text-sm">
+          <table className="w-full min-w-[46rem] text-left text-sm">
             <thead className="bg-tint text-xs tracking-wide text-muted-foreground uppercase">
               <tr>
+                <th className="px-3 py-2 font-medium">Name</th>
                 <th className="px-3 py-2 font-medium">Email</th>
                 <th className="px-3 py-2 font-medium">Joined</th>
                 <th className="px-3 py-2 font-medium">Last sign-in</th>
@@ -286,6 +287,13 @@ export default async function AdminPage({
             <tbody>
               {users.map((u) => (
                 <tr key={u.id} className="border-t border-border">
+                  <td className="px-3 py-2 font-medium">
+                    {u.name ?? (
+                      <span className="font-normal text-muted-foreground">
+                        (not set)
+                      </span>
+                    )}
+                  </td>
                   <td className="px-3 py-2">
                     <Link
                       href={`/admin/users/${u.id}`}
@@ -324,7 +332,7 @@ export default async function AdminPage({
               {users.length === 0 && (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={7}
                     className="px-3 py-6 text-center text-muted-foreground"
                   >
                     No users match.
