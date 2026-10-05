@@ -11,15 +11,13 @@ import {
 } from "~/components/ui/card";
 import { stageInfo } from "~/content/roadmaps";
 import { recommendedActions, ventureProgress } from "~/lib/insights";
-import { createClient } from "~/lib/supabase/server";
+import { getSessionUser, getSupabase } from "~/lib/session";
 import { ventureTypeLabel } from "~/lib/ventures";
 import { loadWorkspace } from "~/lib/workspace";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = await getSupabase();
+  const user = await getSessionUser();
   if (!user) redirect("/login");
 
   const { data: ventures } = await supabase

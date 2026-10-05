@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { DeleteVenture } from "~/components/delete-venture";
 import { VentureForm } from "~/components/venture-form";
-import { createClient } from "~/lib/supabase/server";
+import { getSessionUser, getSupabase } from "~/lib/session";
 import { deleteVenture, updateVenture } from "../../actions";
 
 export default async function EditVenturePage({
@@ -11,10 +11,8 @@ export default async function EditVenturePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = await getSupabase();
+  const user = await getSessionUser();
   if (!user) redirect("/login");
 
   const { data: venture } = await supabase

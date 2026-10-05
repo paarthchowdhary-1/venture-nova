@@ -4,15 +4,13 @@ import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { stageInfo } from "~/content/roadmaps";
 import { achievements, ventureProgress } from "~/lib/insights";
-import { createClient } from "~/lib/supabase/server";
+import { getSessionUser, getSupabase } from "~/lib/session";
 import { ventureTypeLabel } from "~/lib/ventures";
 import { loadWorkspace } from "~/lib/workspace";
 
 export default async function PortfolioPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = await getSupabase();
+  const user = await getSessionUser();
   if (!user) redirect("/login");
 
   const { data: ventures } = await supabase

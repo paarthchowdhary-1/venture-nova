@@ -11,7 +11,7 @@ import {
   personalize,
   stageIndex,
 } from "~/content/lessons";
-import { createClient } from "~/lib/supabase/server";
+import { getSessionUser, getSupabase } from "~/lib/session";
 
 export default async function LessonPage({
   params,
@@ -19,10 +19,8 @@ export default async function LessonPage({
   params: Promise<{ id: string; slug: string }>;
 }) {
   const { id, slug } = await params;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = await getSupabase();
+  const user = await getSessionUser();
   if (!user) redirect("/login");
 
   const { data: venture } = await supabase

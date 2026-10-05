@@ -2,14 +2,10 @@ import Link from "next/link";
 import { signOut } from "~/app/auth/actions";
 import { LogoMark } from "~/components/logo";
 import { Button } from "~/components/ui/button";
-import { createClient } from "~/lib/supabase/server";
+import { getIsAdmin, getSessionUser } from "~/lib/session";
 
 export async function Navbar() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const isAdmin = user ? (await supabase.rpc("is_admin")).data === true : false;
+  const [user, isAdmin] = await Promise.all([getSessionUser(), getIsAdmin()]);
 
   return (
     <nav className="border-b border-border bg-background">

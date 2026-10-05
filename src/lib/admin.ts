@@ -1,22 +1,18 @@
 import { notFound, redirect } from "next/navigation";
-import { createClient } from "~/lib/supabase/server";
+import { cache } from "react";
+import { getIsAdmin, getSessionUser, getSupabase } from "~/lib/session";
 
 /**
  * Gate for every admin page. Non-admins get a plain 404 so the existence of the
  * admin area isn't advertised. The database enforces this too: each admin
  * function refuses to run for anyone who isn't in public.admins.
  */
-export async function requireAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export const requireAdmin = cache(async () => {
+  const user = await getSessionUser();
   if (!user) redirect("/login");
-
-  const { data: isAdmin } = await supabase.rpc("is_admin");
-  if (isAdmin !== true) notFound();
-  return { supabase, user };
-}
+  if (!(await getIsAdmin())) notFound();
+  return { supabase: await getSupabase(), user };
+});
 
 export type AdminOverview = {
   users_total: number;

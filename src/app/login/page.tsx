@@ -1,16 +1,13 @@
 import { redirect } from "next/navigation";
 import { AuthForm } from "~/components/auth-form";
-import { createClient } from "~/lib/supabase/server";
+import { getSessionUser } from "~/lib/session";
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (user) redirect("/dashboard");
 
   const { error } = await searchParams;

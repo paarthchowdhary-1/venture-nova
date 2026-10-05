@@ -1,13 +1,10 @@
 import { redirect } from "next/navigation";
 import { VentureForm } from "~/components/venture-form";
-import { createClient } from "~/lib/supabase/server";
+import { getSessionUser } from "~/lib/session";
 import { createVenture } from "../actions";
 
 export default async function NewVenturePage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) redirect("/login");
 
   return (
