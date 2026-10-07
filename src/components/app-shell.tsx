@@ -301,18 +301,36 @@ export function AppShell({
 
   const ventureId = ventureIdFromPath(pathname);
   const current = ventures.find((v) => v.id === ventureId);
-  const label =
-    pathname === "/dashboard"
-      ? "Home"
-      : pathname === "/portfolio"
-        ? "Founder portfolio"
-        : pathname === "/ventures/new"
-          ? "New venture"
-          : pathname.startsWith("/admin")
-            ? "Admin"
-            : current
-              ? ventureName(current.name)
-              : "Venture";
+  // The path shown in the top bar: Home, then where you are. "Home" is always a
+  // link back to the dashboard.
+  const section = ventureId ? ventureSectionFromPath(pathname, ventureId) : "";
+  const sectionLabel = VENTURE_SECTIONS.find((x) => x.slug === section)?.label;
+  const crumbs: { key: string; label: string; href?: string }[] = [];
+  if (pathname === "/portfolio") {
+    crumbs.push({ key: "portfolio", label: "Founder portfolio" });
+  } else if (pathname === "/ventures/new") {
+    crumbs.push({ key: "new", label: "New venture" });
+  } else if (pathname.startsWith("/admin")) {
+    crumbs.push({
+      key: "admin",
+      label: "Admin",
+      href: pathname === "/admin" ? undefined : "/admin",
+    });
+  } else if (ventureId) {
+    crumbs.push({
+      key: "venture",
+      label: current ? ventureName(current.name) : "Venture",
+      href:
+        section || pathname.endsWith("/edit")
+          ? `/ventures/${ventureId}`
+          : undefined,
+    });
+    if (section && sectionLabel) {
+      crumbs.push({ key: "section", label: sectionLabel });
+    } else if (pathname.endsWith("/edit")) {
+      crumbs.push({ key: "edit", label: "Edit" });
+    }
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -366,7 +384,37 @@ export function AppShell({
           <Link href="/dashboard" className="md:hidden" aria-label="Home">
             <LogoMark className="size-7" />
           </Link>
-          <p className="min-w-0 flex-1 truncate font-semibold">{label}</p>
+          <nav
+            aria-label="Breadcrumb"
+            className="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold"
+          >
+            <Link
+              href="/dashboard"
+              aria-current={crumbs.length === 0 ? "page" : undefined}
+              className="shrink-0 rounded-md px-1.5 py-1 transition-colors hover:bg-secondary hover:text-primary-ink"
+            >
+              Home
+            </Link>
+            {crumbs.map((crumb) => (
+              <span key={crumb.key} className="flex min-w-0 items-center gap-2">
+                <span aria-hidden className="text-muted-foreground">
+                  /
+                </span>
+                {crumb.href ? (
+                  <Link
+                    href={crumb.href}
+                    className="truncate rounded-md px-1.5 py-1 transition-colors hover:bg-secondary hover:text-primary-ink"
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span aria-current="page" className="truncate px-1.5">
+                    {crumb.label}
+                  </span>
+                )}
+              </span>
+            ))}
+          </nav>
           <InviteButton />
           {ventures[0] && (
             <Link
