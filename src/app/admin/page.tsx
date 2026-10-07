@@ -302,7 +302,7 @@ export default async function AdminPage({
                       {u.email ?? "(no email)"}
                     </Link>
                     {u.is_admin && (
-                      <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                      <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary-ink">
                         admin
                       </span>
                     )}

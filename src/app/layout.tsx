@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { AppShell } from "~/components/app-shell";
 import { Footer } from "~/components/footer";
 import { Navbar } from "~/components/navbar";
+import { getIsAdmin, getMyVentures, getSessionUser } from "~/lib/session";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -33,28 +35,30 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1e3a8a",
+  themeColor: "#0d0b22",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getSessionUser();
+  const [isAdmin, ventures] = user
+    ? await Promise.all([getIsAdmin(), getMyVentures()])
+    : [false, []];
+
   return (
     <html lang="en">
-      <body className={`${inter.className} flex min-h-screen flex-col`}>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-sm focus:text-primary-foreground"
+      <body className={`${inter.className} min-h-screen`}>
+        <AppShell
+          user={user ? { name: user.name, email: user.email, isAdmin } : null}
+          ventures={ventures}
+          topNav={<Navbar />}
+          footer={<Footer />}
         >
-          Skip to content
-        </a>
-        <Navbar />
-        <main id="main" className="flex-1">
           {children}
-        </main>
-        <Footer />
+        </AppShell>
       </body>
     </html>
   );

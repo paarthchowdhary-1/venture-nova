@@ -3,30 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { VENTURE_SECTIONS, ventureSectionFromPath } from "~/lib/nav";
 import { cn } from "~/lib/utils";
-
-const tabs = [
-  { slug: "", label: "Overview" },
-  { slug: "learn", label: "Learn" },
-  { slug: "tasks", label: "Tasks" },
-  { slug: "validation", label: "Validation Lab" },
-  { slug: "interviews", label: "Interviews" },
-  { slug: "evidence", label: "Evidence" },
-  { slug: "competitors", label: "Competitors" },
-  { slug: "decisions", label: "Decisions" },
-  { slug: "mvp", label: "MVP" },
-  { slug: "launch", label: "Launch" },
-  { slug: "coach", label: "Coach" },
-  { slug: "share", label: "Share" },
-] as const;
 
 export function VentureNav({ id }: { id: string }) {
   const pathname = usePathname();
   const base = `/ventures/${id}`;
-  const rest = pathname.startsWith(base) ? pathname.slice(base.length) : "";
-  const current = rest.split("/").filter(Boolean)[0] ?? "";
-  const active =
-    current === "lessons" ? "learn" : current === "edit" ? "" : current;
+  const active = ventureSectionFromPath(pathname, id);
 
   const scroller = useRef<HTMLDivElement>(null);
 
@@ -41,13 +24,13 @@ export function VentureNav({ id }: { id: string }) {
   return (
     <nav
       aria-label="Venture sections"
-      className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur"
+      className="sticky top-14 z-20 border-b border-border bg-background/90 backdrop-blur md:hidden"
     >
       <div
         ref={scroller}
         className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-4 py-2 [scrollbar-width:none] max-sm:[mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] [&::-webkit-scrollbar]:hidden"
       >
-        {tabs.map((tab) => (
+        {VENTURE_SECTIONS.map((tab) => (
           <Link
             key={tab.slug}
             href={tab.slug ? `${base}/${tab.slug}` : base}

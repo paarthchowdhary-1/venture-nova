@@ -12,10 +12,13 @@ export const metadata: Metadata = {
 
 export default async function CoachPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ q?: string }>;
 }) {
   const { id } = await params;
+  const { q } = await searchParams;
   const { supabase, snapshot } = await requireWorkspace(id);
   const { data } = await supabase
     .from("coach_messages")
@@ -59,6 +62,7 @@ export default async function CoachPage({
           ventureId={id}
           messages={data ?? []}
           enabled={aiConfigured()}
+          initialMessage={(q ?? "").slice(0, 2000)}
         />
       </div>
       <p className="mt-4 text-xs text-muted-foreground">

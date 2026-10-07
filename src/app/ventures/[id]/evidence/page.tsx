@@ -57,7 +57,7 @@ const confidenceStyle = {
   none: "bg-secondary text-muted-foreground",
   low: "bg-destructive/10 text-destructive",
   medium: "bg-warm/25 text-warm-foreground",
-  high: "bg-primary/10 text-primary",
+  high: "bg-primary/10 text-primary-ink",
 } as const;
 
 export const metadata: Metadata = {

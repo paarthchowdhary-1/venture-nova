@@ -78,7 +78,7 @@ const lenses = [
 ];
 
 const verdictStyle = {
-  validated: "bg-primary/10 text-primary",
+  validated: "bg-primary/10 text-primary-ink",
   needs_more: "bg-warm/25 text-warm-foreground",
   not_validated: "bg-destructive/10 text-destructive",
 } as const;

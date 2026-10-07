@@ -38,3 +38,16 @@ export const getIsAdmin = cache(async () => {
   const { data } = await supabase.rpc("is_admin");
   return data === true;
 });
+
+/** The founder's ventures, newest first, for the sidebar. */
+export const getMyVentures = cache(async () => {
+  const user = await getSessionUser();
+  if (!user) return [];
+  const supabase = await getSupabase();
+  const { data } = await supabase
+    .from("ventures")
+    .select("id, name")
+    .order("created_at", { ascending: false })
+    .limit(8);
+  return (data ?? []) as { id: string; name: string }[];
+});

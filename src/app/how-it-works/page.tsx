@@ -101,7 +101,7 @@ export default function HowItWorksPage() {
                 <span className="flex size-8 items-center justify-center rounded-full bg-warm text-sm font-semibold text-warm-foreground">
                   {item.step}
                 </span>
-                <CardTitle className="text-lg text-primary">
+                <CardTitle className="text-lg text-primary-ink">
                   {item.title}
                 </CardTitle>
               </CardHeader>
@@ -163,7 +163,9 @@ export default function HowItWorksPage() {
             {comparisons.map((item) => (
               <Card key={item.title}>
                 <CardHeader>
-                  <CardTitle className="text-primary">{item.title}</CardTitle>
+                  <CardTitle className="text-primary-ink">
+                    {item.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{item.body}</CardDescription>

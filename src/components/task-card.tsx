@@ -65,7 +65,7 @@ export function TaskCard({
             Not sure how?{" "}
             <Link
               href={help.href}
-              className="font-medium text-primary underline-offset-4 hover:underline"
+              className="font-medium text-primary-ink underline-offset-4 hover:underline"
             >
               I don't understand this: read &ldquo;{help.title}&rdquo;
             </Link>

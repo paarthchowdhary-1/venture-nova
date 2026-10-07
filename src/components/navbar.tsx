@@ -36,7 +36,7 @@ export async function Navbar() {
               {isAdmin && (
                 <Link
                   href="/admin"
-                  className="text-sm font-medium text-primary transition-colors hover:underline"
+                  className="text-sm font-medium text-primary-ink transition-colors hover:underline"
                 >
                   Admin
                 </Link>

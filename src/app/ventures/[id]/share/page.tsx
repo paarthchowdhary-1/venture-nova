@@ -73,7 +73,7 @@ export default async function SharePage({
             <p className="text-sm font-medium">Your page is public:</p>
             <Link
               href={`/v/${id}`}
-              className="text-sm break-all text-primary underline-offset-4 hover:underline"
+              className="text-sm break-all text-primary-ink underline-offset-4 hover:underline"
             >
               {url}
             </Link>

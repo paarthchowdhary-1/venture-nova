@@ -3,7 +3,7 @@ const TONES = [
   "bg-sky-soft text-sky-ink",
   "bg-grape-soft text-grape-ink",
   "bg-coral-soft text-coral-ink",
-  "bg-sun-soft text-warm-foreground",
+  "bg-sun-soft text-sun-ink",
 ] as const;
 
 /** Achievements as colorful badges, each with a check mark. */

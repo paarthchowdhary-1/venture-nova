@@ -9,7 +9,7 @@ import { getSessionUser } from "~/lib/session";
 const loop = [
   { step: "Learn", emoji: "📚", tone: "bg-sky-soft text-sky-ink" },
   { step: "Do", emoji: "🛠️", tone: "bg-mint-soft text-mint-ink" },
-  { step: "Record", emoji: "📝", tone: "bg-sun-soft text-warm-foreground" },
+  { step: "Record", emoji: "📝", tone: "bg-sun-soft text-sun-ink" },
   { step: "Analyze", emoji: "🔍", tone: "bg-coral-soft text-coral-ink" },
   { step: "Adapt", emoji: "🔄", tone: "bg-grape-soft text-grape-ink" },
 ];
@@ -72,7 +72,7 @@ export default async function Home() {
         </Floaty>
 
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-5 px-4 pt-14 pb-14 text-center sm:gap-6 sm:pt-28 sm:pb-24">
-          <Badge className="animate-rise gap-1.5 border-warm/40 bg-sun-soft px-3 py-1 text-warm-foreground">
+          <Badge className="animate-rise gap-1.5 border-warm/40 bg-sun-soft px-3 py-1 text-sun-ink">
             {user?.name ? (
               <>
                 <span aria-hidden>👋</span> Welcome back, {user.name}!
@@ -159,7 +159,7 @@ export default async function Home() {
             >
               <span
                 aria-hidden
-                className="flex size-12 items-center justify-center rounded-full bg-white/70 text-2xl shadow-sm"
+                className="flex size-12 items-center justify-center rounded-full bg-white/10 text-2xl shadow-sm"
               >
                 {item.emoji}
               </span>
@@ -176,7 +176,7 @@ export default async function Home() {
         </p>
         <Link
           href="/how-it-works"
-          className="mt-3 text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          className="mt-3 text-sm font-semibold text-primary-ink underline-offset-4 hover:underline"
         >
           See how it works &rarr;
         </Link>
@@ -202,7 +202,7 @@ export default async function Home() {
 
       <section className="px-4 py-12 sm:py-20">
         <div className="bg-brand-gradient relative isolate mx-auto flex w-full max-w-4xl flex-col items-center gap-5 overflow-hidden rounded-3xl px-6 py-12 text-center text-primary-foreground shadow-xl sm:py-16">
-          <div className="bg-dots absolute inset-0 -z-10 opacity-30 invert" />
+          <div className="bg-dots absolute inset-0 -z-10 opacity-40" />
           <Floaty className="top-4 left-6 text-3xl opacity-80">⭐</Floaty>
           <Floaty slow className="right-8 bottom-5 text-3xl opacity-80">
             🚀

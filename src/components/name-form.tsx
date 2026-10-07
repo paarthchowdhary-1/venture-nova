@@ -27,7 +27,7 @@ export function NameForm() {
           maxLength={50}
           autoComplete="given-name"
           placeholder="Your first name"
-          className="bg-white"
+          className="bg-background"
         />
       </div>
       <Button type="submit" disabled={pending}>

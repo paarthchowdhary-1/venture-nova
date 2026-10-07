@@ -17,7 +17,7 @@ export function StartCta({
             asChild
             size="lg"
             variant="outline"
-            className="rounded-full border-primary/30 bg-white/70 px-8 backdrop-blur hover:bg-white"
+            className="rounded-full border-white/20 bg-white/5 px-8 backdrop-blur hover:bg-white/10"
           >
             <Link href="/how-it-works">See how it works</Link>
           </Button>

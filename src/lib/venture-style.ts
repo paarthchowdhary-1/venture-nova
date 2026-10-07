@@ -39,7 +39,7 @@ export const TYPE_STYLE: Record<
   other: {
     emoji: "✨",
     soft: "bg-sun-soft",
-    ink: "text-warm-foreground",
+    ink: "text-sun-ink",
     strip: "from-warm to-coral",
     ring: "ring-warm/40",
   },

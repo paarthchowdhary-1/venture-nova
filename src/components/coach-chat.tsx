@@ -11,10 +11,12 @@ export function CoachChat({
   ventureId,
   messages,
   enabled,
+  initialMessage = "",
 }: {
   ventureId: string;
   messages: ChatMessage[];
   enabled: boolean;
+  initialMessage?: string;
 }) {
   const [state, formAction, pending] = useActionState<CoachState, FormData>(
     sendCoachMessage.bind(null, ventureId),
@@ -88,6 +90,7 @@ export function CoachChat({
           name="message"
           required
           maxLength={2000}
+          defaultValue={initialMessage}
           disabled={!enabled}
           placeholder={
             enabled
