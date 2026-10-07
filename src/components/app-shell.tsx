@@ -84,7 +84,7 @@ function SidebarContent({
   return (
     <div className="flex h-full flex-col gap-1 overflow-y-auto px-3 py-4">
       <Link
-        href="/dashboard"
+        href="/"
         className="mb-2 flex items-center gap-2.5 px-2 pb-3 font-semibold tracking-tight"
       >
         <LogoMark className="size-8" />
@@ -95,7 +95,7 @@ function SidebarContent({
       <NavLink
         href="/dashboard"
         icon="home"
-        label="Home"
+        label="Dashboard"
         active={pathname === "/dashboard"}
       />
 
@@ -305,7 +305,13 @@ export function AppShell({
   // link back to the dashboard.
   const section = ventureId ? ventureSectionFromPath(pathname, ventureId) : "";
   const sectionLabel = VENTURE_SECTIONS.find((x) => x.slug === section)?.label;
-  const crumbs: { key: string; label: string; href?: string }[] = [];
+  const crumbs: { key: string; label: string; href?: string }[] = [
+    {
+      key: "dashboard",
+      label: "Dashboard",
+      href: pathname === "/dashboard" ? undefined : "/dashboard",
+    },
+  ];
   if (pathname === "/portfolio") {
     crumbs.push({ key: "portfolio", label: "Founder portfolio" });
   } else if (pathname === "/ventures/new") {
@@ -381,7 +387,7 @@ export function AppShell({
           >
             <Icon name="menu" className="size-5" />
           </button>
-          <Link href="/dashboard" className="md:hidden" aria-label="Home">
+          <Link href="/" className="md:hidden" aria-label="Home">
             <LogoMark className="size-7" />
           </Link>
           <nav
@@ -389,8 +395,7 @@ export function AppShell({
             className="flex min-w-0 flex-1 items-center gap-2 text-sm font-semibold"
           >
             <Link
-              href="/dashboard"
-              aria-current={crumbs.length === 0 ? "page" : undefined}
+              href="/"
               className="shrink-0 rounded-md px-1.5 py-1 transition-colors hover:bg-secondary hover:text-primary-ink"
             >
               Home
