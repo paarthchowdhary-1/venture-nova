@@ -8,6 +8,7 @@ import { NameForm } from "~/components/name-form";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar } from "~/components/ui/progress";
+import { VentureTitle } from "~/components/venture-title";
 import { stageIndex } from "~/content/lessons";
 import { stageInfo } from "~/content/roadmaps";
 import { loadActivity, relativeDay } from "~/lib/activity";
@@ -114,20 +115,21 @@ export default async function DashboardPage() {
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_21rem]">
           <div className="flex min-w-0 flex-col gap-6">
             {/* Your venture */}
-            <section className="bg-hero @container relative isolate overflow-hidden rounded-2xl border border-border p-6 sm:p-8">
-              <Orbit className="pointer-events-none absolute top-1/2 right-0 -z-10 h-56 -translate-y-1/2 opacity-25 @2xl:right-4 @2xl:opacity-90" />
-              <p className="text-xs font-semibold tracking-wider text-primary-ink uppercase">
+            <section className="bg-hero @container relative isolate overflow-hidden rounded-3xl border border-primary/30 p-7 shadow-xl shadow-primary/10 sm:p-10">
+              <Orbit className="pointer-events-none absolute top-1/2 right-0 -z-10 h-72 -translate-y-1/2 opacity-25 @2xl:right-6 @2xl:h-80 @2xl:opacity-90" />
+              <p className="text-sm font-semibold tracking-wider text-primary-ink uppercase">
                 Your venture
               </p>
-              <h2 className="mt-2 max-w-md text-3xl font-extrabold tracking-tight text-balance @2xl:max-w-[55%] sm:text-4xl">
-                {primary.venture.name}
+              <h2 className="mt-3 text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-5xl @2xl:max-w-[60%] @4xl:text-6xl">
+                <VentureTitle name={primary.venture.name} />
               </h2>
-              <p className="mt-2 line-clamp-2 max-w-md text-muted-foreground @2xl:max-w-[55%]">
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-foreground/80 @2xl:max-w-[55%]">
                 {primary.venture.idea}
               </p>
-              <div className="mt-4 flex flex-wrap items-center gap-3">
+              <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Badge
                   className={cn(
+                    "px-3 py-1 text-sm",
                     typeStyle(primary.venture.venture_type).soft,
                     typeStyle(primary.venture.venture_type).ink,
                   )}
@@ -284,8 +286,10 @@ export default async function DashboardPage() {
                                 {style.emoji}
                               </span>
                               <div className="min-w-0">
-                                <h3 className="truncate font-bold">{v.name}</h3>
-                                <p className="line-clamp-2 text-sm text-muted-foreground">
+                                <h3 className="font-bold">
+                                  <VentureTitle name={v.name} />
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
                                   {v.idea}
                                 </p>
                               </div>

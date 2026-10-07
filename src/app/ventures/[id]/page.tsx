@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar, type ProgressTone } from "~/components/ui/progress";
+import { VentureTitle } from "~/components/venture-title";
 import { stageIndex } from "~/content/lessons";
 import { stageInfo } from "~/content/roadmaps";
 import {
@@ -81,7 +82,7 @@ export default async function VenturePage({
               {style.emoji}
             </span>
             <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-              {venture.name}
+              <VentureTitle name={venture.name} />
             </h1>
           </div>
           <Button variant="outline" size="sm" className="bg-white/5" asChild>

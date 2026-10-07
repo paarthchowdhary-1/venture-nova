@@ -6,6 +6,7 @@ import { type ReactNode, useEffect, useState } from "react";
 import { signOut } from "~/app/auth/actions";
 import { Icon, type IconName } from "~/components/icons";
 import { LogoMark } from "~/components/logo";
+import { ventureName } from "~/components/venture-title";
 import {
   VENTURE_SECTIONS,
   ventureIdFromPath,
@@ -28,11 +29,13 @@ function NavLink({
   icon,
   label,
   active,
+  wrap = false,
 }: {
   href: string;
   icon: IconName;
   label: string;
   active: boolean;
+  wrap?: boolean;
 }) {
   return (
     <Link
@@ -52,7 +55,11 @@ function NavLink({
           active ? "text-primary-ink" : "group-hover:text-primary-ink",
         )}
       />
-      <span className="truncate">{label}</span>
+      <span
+        className={wrap ? "leading-snug [overflow-wrap:anywhere]" : "truncate"}
+      >
+        {label}
+      </span>
     </Link>
   );
 }
@@ -95,7 +102,7 @@ function SidebarContent({
       {ventureId ? (
         <>
           <p className="mt-4 mb-1 truncate px-3 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-            {currentVenture?.name ?? "This venture"}
+            {currentVenture ? ventureName(currentVenture.name) : "This venture"}
           </p>
           {VENTURE_SECTIONS.map((item) => (
             <NavLink
@@ -122,8 +129,9 @@ function SidebarContent({
                 key={v.id}
                 href={`/ventures/${v.id}`}
                 icon="map"
-                label={v.name}
+                label={ventureName(v.name)}
                 active={false}
+                wrap
               />
             ))}
           </>
@@ -302,7 +310,9 @@ export function AppShell({
           ? "New venture"
           : pathname.startsWith("/admin")
             ? "Admin"
-            : (current?.name ?? "Venture");
+            : current
+              ? ventureName(current.name)
+              : "Venture";
 
   return (
     <div className="flex min-h-screen">
