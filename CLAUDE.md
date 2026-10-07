@@ -1,5 +1,7 @@
 # Next.js App
 
+**Product spec:** [docs/PRD.md](docs/PRD.md) is the current PRD and 4-day MVP scope. Read it before starting feature work.
+
 ## Rules Index
 
 Detailed rules live in `.claude/rules/`. When adding, updating, or deleting a rules file, keep this index in sync.
