@@ -23,7 +23,7 @@
   --color-tint: oklch(0.968 0.022 280);
   --color-warm: oklch(0.82 0.17 78);
   --color-warm-foreground: oklch(0.3 0.08 70);
-  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-destructive: oklch(0.5 0.22 27);
   --color-ring: oklch(0.55 0.2 273);
 
   /* Playful accents: a bright color, a soft background, and a readable ink. */
