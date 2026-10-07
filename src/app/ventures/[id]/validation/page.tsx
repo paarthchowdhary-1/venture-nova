@@ -19,8 +19,6 @@ const newFields: readonly Field[] = [
     type: "textarea",
     required: true,
     maxLength: 500,
-    placeholder:
-      "High school athletes struggle to find affordable tennis coaching.",
     help: "A belief about your customer that you can test, written so people could say yes or no to it.",
   },
   {

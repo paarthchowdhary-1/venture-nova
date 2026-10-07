@@ -6,7 +6,21 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "~/lib/supabase/server";
 
-export type AuthState = { error?: string; message?: string };
+export type AuthState = {
+  error?: string;
+  message?: string;
+  /** What the person typed, so a failed attempt doesn't wipe the form. */
+  email?: string;
+  name?: string;
+};
+
+/** The non-secret fields to hand back after a failed attempt (never the password). */
+function kept(formData: FormData) {
+  return {
+    email: String(formData.get("email") ?? ""),
+    name: String(formData.get("name") ?? ""),
+  };
+}
 
 const credentialsSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
@@ -35,11 +49,11 @@ export async function signUp(
 ): Promise<AuthState> {
   const parsed = readCredentials(formData);
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message };
+    return { error: parsed.error.issues[0]?.message, ...kept(formData) };
   }
   const name = nameSchema.safeParse(formData.get("name") ?? "");
   if (!name.success) {
-    return { error: name.error.issues[0]?.message };
+    return { error: name.error.issues[0]?.message, ...kept(formData) };
   }
 
   const requestHeaders = await headers();
@@ -56,7 +70,7 @@ export async function signUp(
   });
 
   if (error) {
-    return { error: error.message };
+    return { error: error.message, ...kept(formData) };
   }
   if (data.session) {
     redirect("/dashboard");
@@ -72,13 +86,13 @@ export async function signIn(
 ): Promise<AuthState> {
   const parsed = readCredentials(formData);
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message };
+    return { error: parsed.error.issues[0]?.message, ...kept(formData) };
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
-    return { error: error.message };
+    return { error: error.message, ...kept(formData) };
   }
   redirect("/dashboard");
 }
@@ -99,7 +113,7 @@ export async function requestPasswordReset(
 ): Promise<AuthState> {
   const parsed = emailSchema.safeParse({ email: formData.get("email") });
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message };
+    return { error: parsed.error.issues[0]?.message, ...kept(formData) };
   }
 
   const requestHeaders = await headers();
@@ -112,7 +126,10 @@ export async function requestPasswordReset(
     { redirectTo: `${origin}/auth/callback?next=/reset-password` },
   );
   if (error?.status === 429) {
-    return { error: "Please wait a minute before asking for another link." };
+    return {
+      error: "Please wait a minute before asking for another link.",
+      ...kept(formData),
+    };
   }
 
   return {

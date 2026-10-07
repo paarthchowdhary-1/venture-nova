@@ -10,7 +10,6 @@ const fields: readonly Field[] = [
   {
     name: "interviewee",
     label: "Who did you talk to?",
-    placeholder: "Maya, 10th grade",
     required: true,
     maxLength: 120,
     help: "A first name or label is plenty. Don't record last names or contact details.",
@@ -21,21 +20,17 @@ const fields: readonly Field[] = [
     label: "Notes",
     type: "textarea",
     maxLength: 4000,
-    placeholder:
-      "What did they tell you about the last time they had this problem?",
   },
   {
     name: "tags",
     label: "Problems or themes they mentioned",
     maxLength: 600,
-    placeholder: "finding partners, scheduling, cost",
     help: "Separate with commas. VentureNova counts these across your interviews to find patterns.",
   },
   {
     name: "key_quote",
     label: "A quote worth keeping (optional)",
     maxLength: 500,
-    placeholder: "I never know who to ask.",
   },
 ];
 

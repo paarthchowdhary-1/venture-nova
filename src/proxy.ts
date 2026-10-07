@@ -2,6 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 import { env } from "~/env";
 
+/** Pages that need a signed-in founder. */
+const APP_PATH = /^\/(dashboard|portfolio|ventures|admin)(\/|$)/;
+
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -28,7 +31,13 @@ export async function proxy(request: NextRequest) {
 
   // Refresh the auth token when it has expired. getClaims() checks the signed
   // token locally, so a normal request needs no round trip to the auth server.
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+
+  // Signed-in pages: send logged-out visitors to log in before anything renders,
+  // so they get a real redirect instead of a page that redirects after loading.
+  if (!data?.claims && APP_PATH.test(request.nextUrl.pathname)) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
   return response;
 }

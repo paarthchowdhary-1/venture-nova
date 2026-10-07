@@ -123,9 +123,6 @@ export default async function DashboardPage() {
               <h2 className="mt-3 text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-5xl @2xl:max-w-[60%] @4xl:text-6xl">
                 <VentureTitle name={primary.venture.name} />
               </h2>
-              <p className="mt-4 max-w-xl text-lg leading-relaxed text-foreground/80 @2xl:max-w-[55%]">
-                {primary.venture.idea}
-              </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Badge
                   className={cn(
@@ -289,9 +286,6 @@ export default async function DashboardPage() {
                                 <h3 className="font-bold">
                                   <VentureTitle name={v.name} />
                                 </h3>
-                                <p className="text-sm text-muted-foreground">
-                                  {v.idea}
-                                </p>
                               </div>
                             </div>
                             <div className="mt-auto">
@@ -405,16 +399,6 @@ export default async function DashboardPage() {
                 </p>
               </div>
             </Panel>
-
-            <section className="flex items-center gap-4 rounded-2xl border border-dashed border-primary/50 bg-primary/5 p-5">
-              <Sparkle className="size-12 shrink-0 text-primary-ink" />
-              <div>
-                <h2 className="font-bold">Keep your momentum</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  One real conversation this week can change your whole idea.
-                </p>
-              </div>
-            </section>
           </aside>
         </div>
       )}

@@ -65,9 +65,9 @@ function QuizAttempt({
               : `You need ${result.needed} of ${result.total} to pass. Look back over the reading, then try again.`}
           </p>
           {result.advancedTo && (
-            <p className="bg-brand-gradient mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold text-primary-foreground capitalize shadow-md">
+            <p className="bg-brand-gradient mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold text-primary-foreground shadow-md">
               <span aria-hidden>🚀</span> Level up! You moved up to the{" "}
-              {result.advancedTo} stage
+              <span className="capitalize">{result.advancedTo}</span> stage
             </p>
           )}
           {result.passed && result.allDone && (

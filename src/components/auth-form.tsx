@@ -57,6 +57,7 @@ export function AuthForm({
               id={nameId}
               name="name"
               type="text"
+              defaultValue={state.name}
               required
               maxLength={50}
               autoComplete="given-name"
@@ -70,6 +71,7 @@ export function AuthForm({
             id={emailId}
             name="email"
             type="email"
+            defaultValue={state.email}
             required
             autoComplete="email"
             placeholder="you@example.com"

@@ -11,20 +11,17 @@ const fields: readonly Field[] = [
     type: "textarea",
     required: true,
     maxLength: 500,
-    placeholder: "Target high school athletes first.",
   },
   {
     name: "reason",
     label: "Why?",
     type: "textarea",
     maxLength: 1000,
-    placeholder: "8 of 12 interviews named the same problem.",
   },
   {
     name: "evidence",
     label: "What evidence did you have?",
     maxLength: 1000,
-    placeholder: "14 customer interviews, 3 survey results",
   },
   {
     name: "decided_on",

@@ -1,4 +1,5 @@
-export default function Loading() {
+/** A calm placeholder shown while a signed-in page loads. */
+export function LoadingSkeleton() {
   return (
     <div
       role="status"

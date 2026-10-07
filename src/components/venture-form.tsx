@@ -50,7 +50,7 @@ export function VentureForm({
           required
           maxLength={120}
           defaultValue={initial?.name}
-          placeholder="StudyBuddy"
+          placeholder="Untitled"
         />
       </div>
 
@@ -89,7 +89,6 @@ export function VentureForm({
           maxLength={2000}
           defaultValue={initial?.idea}
           className={textareaClass}
-          placeholder="An app that helps high school students find study partners."
         />
       </div>
 
@@ -101,7 +100,6 @@ export function VentureForm({
           maxLength={2000}
           defaultValue={initial?.problem ?? ""}
           className={textareaClass}
-          placeholder="Students struggle to find people to study with."
         />
       </div>
 
@@ -112,7 +110,6 @@ export function VentureForm({
           name="targetCustomer"
           maxLength={1000}
           defaultValue={initial?.target_customer ?? ""}
-          placeholder="High schoolers in AP classes"
         />
       </div>
 

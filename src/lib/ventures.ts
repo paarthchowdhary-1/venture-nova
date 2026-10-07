@@ -1,5 +1,5 @@
 export const VENTURE_TYPES = [
-  { value: "service", label: "Service or business (e.g. tutoring)" },
+  { value: "service", label: "Service or business" },
   { value: "physical_product", label: "Physical product" },
   { value: "software", label: "App or software" },
   { value: "nonprofit", label: "Nonprofit or social impact" },

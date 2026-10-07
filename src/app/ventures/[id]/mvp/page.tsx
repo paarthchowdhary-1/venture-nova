@@ -35,7 +35,6 @@ const fields: readonly Field[] = [
     label: "Feature",
     required: true,
     maxLength: 200,
-    placeholder: "Coach search",
   },
   {
     name: "bucket",

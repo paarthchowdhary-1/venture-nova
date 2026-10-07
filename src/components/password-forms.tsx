@@ -52,6 +52,7 @@ export function ForgotPasswordForm() {
             id={emailId}
             name="email"
             type="email"
+            defaultValue={state.email}
             required
             autoComplete="email"
             placeholder="you@example.com"

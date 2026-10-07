@@ -49,7 +49,6 @@ const evidenceFields: readonly Field[] = [
     label: "Describe it",
     required: true,
     maxLength: 500,
-    placeholder: "9 of 12 athletes said finding a coach was the hardest part",
   },
 ];
 
@@ -97,8 +96,6 @@ export default async function EvidencePage({
                 type: "textarea",
                 required: true,
                 maxLength: 500,
-                placeholder:
-                  "Students struggle to find affordable tennis coaching.",
               },
             ]}
           />

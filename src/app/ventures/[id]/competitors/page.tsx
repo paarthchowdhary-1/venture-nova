@@ -11,27 +11,22 @@ const fields: readonly Field[] = [
     label: "Competitor",
     required: true,
     maxLength: 120,
-    placeholder:
-      "Another app, a tutor, a YouTube channel, or doing it yourself",
     help: 'Include indirect options and "doing nothing" too.',
   },
   {
     name: "strength",
     label: "What do they do well?",
     maxLength: 500,
-    placeholder: "Great design",
   },
   {
     name: "weakness",
     label: "Where do they fall short?",
     maxLength: 500,
-    placeholder: "Expensive",
   },
   {
     name: "target",
     label: "Who are they aimed at?",
     maxLength: 300,
-    placeholder: "Adults",
   },
 ];
 
