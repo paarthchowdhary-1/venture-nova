@@ -44,8 +44,8 @@ function NavLink({
       className={cn(
         "group flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
         active
-          ? "bg-primary/20 text-foreground ring-1 ring-primary/30"
-          : "text-muted-foreground hover:bg-white/5 hover:text-foreground",
+          ? "bg-secondary text-primary-ink ring-1 ring-primary/25"
+          : "text-muted-foreground hover:bg-secondary hover:text-foreground",
       )}
     >
       <Icon
@@ -166,7 +166,7 @@ function SidebarContent({
       <div className="mt-auto flex flex-col gap-1 pt-6">
         <a
           href="mailto:hello@venturenova.org?subject=VentureNova%20feedback"
-          className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+          className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
         >
           <Icon name="help" className="size-[18px]" />
           Help &amp; feedback
@@ -192,7 +192,7 @@ function SidebarContent({
               type="submit"
               aria-label="Log out"
               title="Log out"
-              className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+              className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               <Icon name="logout" className="size-[18px]" />
             </button>
@@ -235,7 +235,7 @@ function InviteButton() {
           // Sharing was cancelled or isn't available. Nothing else to do.
         }
       }}
-      className="hidden items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground sm:flex"
+      className="hidden items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:flex"
     >
       <Icon name="gift" className="size-4" />
       <span aria-live="polite">
@@ -319,7 +319,7 @@ export function AppShell({
       {skip}
       <aside
         aria-label="Main"
-        className="sticky top-0 hidden h-screen w-64 shrink-0 border-r border-border bg-[oklch(0.12_0.03_285)] md:block"
+        className="sticky top-0 hidden h-screen w-64 shrink-0 border-r border-border bg-card md:block"
       >
         <SidebarContent user={user} ventures={ventures} pathname={pathname} />
       </aside>
@@ -334,13 +334,13 @@ export function AppShell({
           />
           <aside
             aria-label="Main"
-            className="animate-rise absolute inset-y-0 left-0 w-72 max-w-[85vw] border-r border-border bg-[oklch(0.12_0.03_285)] shadow-2xl"
+            className="animate-rise absolute inset-y-0 left-0 w-72 max-w-[85vw] border-r border-border bg-card shadow-2xl"
           >
             <button
               type="button"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
-              className="absolute top-4 right-3 z-10 flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-white/10"
+              className="absolute top-4 right-3 z-10 flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary"
             >
               <Icon name="close" className="size-5" />
             </button>
@@ -359,7 +359,7 @@ export function AppShell({
             type="button"
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-white/10 md:hidden"
+            className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary md:hidden"
           >
             <Icon name="menu" className="size-5" />
           </button>

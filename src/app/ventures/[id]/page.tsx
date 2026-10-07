@@ -77,7 +77,7 @@ export default async function VenturePage({
           <div className="flex items-center gap-3">
             <span
               aria-hidden
-              className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-2xl shadow-sm"
+              className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/80 text-2xl shadow-sm"
             >
               {style.emoji}
             </span>
@@ -85,12 +85,12 @@ export default async function VenturePage({
               <VentureTitle name={venture.name} />
             </h1>
           </div>
-          <Button variant="outline" size="sm" className="bg-white/5" asChild>
+          <Button variant="outline" size="sm" className="bg-white/70" asChild>
             <Link href={`/ventures/${id}/edit`}>Edit</Link>
           </Button>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Badge variant="secondary" className="bg-white/10">
+          <Badge variant="secondary" className="bg-white/80">
             {ventureTypeLabel(venture.venture_type)}
           </Badge>
           <Badge className="bg-primary text-primary-foreground">
@@ -183,7 +183,7 @@ export default async function VenturePage({
                   aria-hidden
                   className={cn(
                     "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-sm",
-                    state === "done" && "bg-mint text-background",
+                    state === "done" && "bg-mint text-white",
                     state === "current" && "bg-brand-gradient glow",
                     state === "next" && "bg-muted grayscale",
                   )}

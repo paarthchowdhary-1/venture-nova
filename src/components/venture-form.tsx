@@ -8,10 +8,10 @@ import { Label } from "~/components/ui/label";
 import { VENTURE_TYPES } from "~/lib/ventures";
 
 const textareaClass =
-  "min-h-24 w-full rounded-md border border-input bg-input/30 px-3 py-2 text-base shadow-xs outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm";
+  "min-h-24 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm";
 
 const selectClass =
-  "h-9 w-full rounded-md border border-input bg-input/30 px-3 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm";
+  "h-9 w-full rounded-md border border-input bg-transparent px-3 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm";
 
 type Initial = {
   name: string;

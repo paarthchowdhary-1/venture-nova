@@ -39,7 +39,7 @@ export function Orbit({ className }: { className?: string }) {
       <circle cx="262" cy="52" r="9" fill="oklch(0.82 0.17 78)" />
       <circle cx="330" cy="104" r="8" fill="oklch(0.76 0.16 160)" />
       <circle cx="228" cy="158" r="7" fill="oklch(0.7 0.2 305)" />
-      <g fill="oklch(0.9 0.05 285)" opacity="0.7">
+      <g fill="oklch(0.55 0.1 285)" opacity="0.5">
         <circle cx="40" cy="40" r="1.6" />
         <circle cx="90" cy="180" r="1.4" />
         <circle cx="320" cy="30" r="1.6" />

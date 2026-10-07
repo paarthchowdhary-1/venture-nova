@@ -214,7 +214,7 @@ export default async function DashboardPage() {
                           className={cn(
                             "flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold",
                             c.state === "done" &&
-                              "border-mint bg-mint text-background",
+                              "border-mint bg-mint text-white",
                             c.state === "current" &&
                               "border-primary text-primary-ink",
                             c.state === "next" &&
@@ -329,7 +329,7 @@ export default async function DashboardPage() {
               <form
                 action={`/ventures/${primary.venture.id}/coach`}
                 method="get"
-                className="mt-4 flex items-center gap-2 rounded-xl border border-input bg-input/30 p-1.5 pl-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/40"
+                className="mt-4 flex items-center gap-2 rounded-xl border border-input bg-background p-1.5 pl-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/40"
               >
                 <label htmlFor="coach-q" className="sr-only">
                   What are you stuck on?
