@@ -165,6 +165,7 @@ export function WelcomeStart({ firstName }: { firstName: string | null }) {
           )}
           {step < STEPS - 1 ? (
             <Button
+              key="next"
               type="button"
               variant="fun"
               size="lg"
@@ -175,7 +176,11 @@ export function WelcomeStart({ firstName }: { firstName: string | null }) {
               Next &rarr;
             </Button>
           ) : (
+            // A separate element (note the keys): if React reused the Next
+            // button here, its type would flip to "submit" in the middle of
+            // the same click, and that click would submit the form.
             <Button
+              key="submit"
               type="submit"
               variant="fun"
               size="lg"

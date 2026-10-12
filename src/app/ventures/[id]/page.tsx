@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Boom } from "~/components/boom";
+import { ConfettiRain } from "~/components/confetti-rain";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar, type ProgressTone } from "~/components/ui/progress";
@@ -106,7 +106,7 @@ export default async function VenturePage({
 
       {welcome === "1" && (
         <section className="bg-hero relative mt-8 overflow-hidden rounded-2xl border border-primary/30 p-5 sm:p-6">
-          <Boom />
+          <ConfettiRain />
           <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl">
             <span aria-hidden>🎉</span> Your venture is set up!
           </h2>
