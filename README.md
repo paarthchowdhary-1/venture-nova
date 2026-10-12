@@ -1,16 +1,43 @@
+<p align="center">
+  <img src="docs/images/banner.png" alt="VentureNova: You have an idea. We help you build it." width="100%">
+</p>
+
+<p align="center">
+  <a href="https://venturenova.org"><b>Try it free at venturenova.org &rarr;</b></a>
+</p>
+
+<p align="center">
+  <img alt="Free" src="https://img.shields.io/badge/price-free-2ea44f">
+  <img alt="Ages 12-18" src="https://img.shields.io/badge/for-ages%2012%E2%80%9318-4636c9">
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white">
+  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-3ecf8e?logo=supabase&logoColor=white">
+  <img alt="Claude" src="https://img.shields.io/badge/AI%20coach-Claude-d97757">
+</p>
+
 # VentureNova
 
-**A free, AI-coached entrepreneurship platform for young founders ages 12–18.**
+**A free, AI-coached entrepreneurship platform for young founders ages 12–18.** Describe your idea, get a roadmap built for your kind of venture, and prove it works with real evidence, not just by clicking through lessons.
 
-Live site: **[venturenova.org](https://venturenova.org)**
+Most business-learning sites reward activity. VentureNova measures progress by evidence: did you talk to real people, test your idea, and change your plan based on what you learned?
 
-Most business-learning sites reward students for clicking through lessons. VentureNova measures progress by evidence: did you talk to real people, test your idea, and change your plan based on what you learned?
+> Built by a student as part of the Lumos Fellows Program, starting from [create-lumos-app](https://github.com/lumos-fellows/create-lumos-app).
 
-Built by a student as part of the Lumos Fellows Program, starting from [create-lumos-app](https://github.com/lumos-fellows/create-lumos-app).
+## Try it in 60 seconds
+
+1. Go to **[venturenova.org](https://venturenova.org)** and sign up with an email and password. There's no email verification step.
+2. Describe your idea in a sentence.
+3. Do your first task, then ask the AI coach to poke holes in your plan.
+
+It works great on a phone.
 
 ## How it works
 
-Learn → Do → Record → Analyze → Adapt. A student describes an idea, gets a roadmap for their kind of venture, completes real tasks, records what happened, and lets the roadmap adapt to the evidence.
+<p align="center">
+  <img src="docs/images/loop.png" alt="Learn, Do, Record, Analyze, Adapt" width="100%">
+</p>
+
+A student describes an idea, gets a personalized roadmap, completes real tasks, records what happened, and lets the roadmap adapt to the evidence.
 
 ## Features
 
