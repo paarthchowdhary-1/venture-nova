@@ -63,6 +63,48 @@ export async function createVenture(
   redirect(`/ventures/${data.id}`);
 }
 
+/**
+ * The guided first-run form only asks for the idea and the kind of venture.
+ * A name is optional: leaving it blank saves the venture as "Untitled", which
+ * the student can rename at any time. They land on the venture with a welcome
+ * moment and their first task.
+ */
+export async function quickStartVenture(
+  _prev: VentureFormState,
+  formData: FormData,
+): Promise<VentureFormState> {
+  const typedName = String(formData.get("name") ?? "").trim();
+  const parsed = ventureSchema.safeParse({
+    name: typedName || "Untitled",
+    idea: formData.get("idea") ?? "",
+    problem: "",
+    targetCustomer: "",
+    ventureType: formData.get("ventureType"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { name, idea, ventureType } = parsed.data;
+  const { data, error } = await supabase
+    .from("ventures")
+    .insert({ name, idea, venture_type: ventureType })
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    return { error: "Couldn't save your venture. Please try again." };
+  }
+  revalidatePath("/dashboard");
+  redirect(`/ventures/${data.id}?welcome=1`);
+}
+
 export async function updateVenture(
   ventureId: string,
   _prev: VentureFormState,

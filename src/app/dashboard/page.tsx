@@ -9,6 +9,7 @@ import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar } from "~/components/ui/progress";
 import { VentureTitle } from "~/components/venture-title";
+import { WelcomeStart } from "~/components/welcome-start";
 import { stageIndex } from "~/content/lessons";
 import { stageInfo } from "~/content/roadmaps";
 import { loadActivity, relativeDay } from "~/lib/activity";
@@ -98,19 +99,7 @@ export default async function DashboardPage() {
       )}
 
       {!primary ? (
-        <Panel className="mt-6 flex flex-col items-center gap-3 border-dashed py-14 text-center">
-          <Sparkle className="size-10 text-primary-ink" />
-          <p className="text-lg font-bold">
-            You haven&apos;t started a venture yet.
-          </p>
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Tell us your idea and we&apos;ll build you a roadmap, with real
-            tasks and a coach to push you.
-          </p>
-          <Button asChild variant="fun" size="lg" className="mt-2 rounded-full">
-            <Link href="/ventures/new">Start your first venture</Link>
-          </Button>
-        </Panel>
+        <WelcomeStart firstName={user.name} />
       ) : (
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_21rem]">
           <div className="flex min-w-0 flex-col gap-6">

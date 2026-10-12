@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Confetti } from "~/components/confetti";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar, type ProgressTone } from "~/components/ui/progress";
@@ -37,10 +38,13 @@ export const metadata: Metadata = {
 
 export default async function VenturePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ welcome?: string }>;
 }) {
   const { id } = await params;
+  const { welcome } = await searchParams;
   const { snapshot } = await requireWorkspace(id);
   const venture = snapshot.venture;
 
@@ -100,7 +104,52 @@ export default async function VenturePage({
         <p className="mt-4 text-foreground/80">{venture.idea}</p>
       </header>
 
-      {nextAction && (
+      {welcome === "1" && (
+        <section className="bg-hero relative mt-8 overflow-hidden rounded-2xl border border-primary/30 p-5 sm:p-6">
+          <Confetti />
+          <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl">
+            <span aria-hidden>🎉</span> Your venture is set up!
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            You&apos;ve done the hardest part: you started. Here are two good
+            ways to keep going.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {nextAction && (
+              <Link
+                href={nextAction.href}
+                className="card-pop flex flex-col gap-1 rounded-xl border border-border bg-card p-4"
+              >
+                <span className="text-xs font-semibold tracking-wide text-primary-ink uppercase">
+                  Do this first
+                </span>
+                <span className="font-semibold">{nextAction.title}</span>
+                <span className="text-sm text-muted-foreground">
+                  About {nextAction.minutes} minutes
+                </span>
+              </Link>
+            )}
+            <Link
+              href={`/ventures/${id}/coach?q=${encodeURIComponent(
+                "Here's my idea. What's the weakest part of it, and what should I figure out first?",
+              )}`}
+              className="card-pop flex flex-col gap-1 rounded-xl border border-border bg-card p-4"
+            >
+              <span className="text-xs font-semibold tracking-wide text-grape-ink uppercase">
+                Or try this
+              </span>
+              <span className="font-semibold">
+                Ask your coach to challenge your idea
+              </span>
+              <span className="text-sm text-muted-foreground">
+                It pushes back so you can make it stronger
+              </span>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {nextAction && welcome !== "1" && (
         <section className="bg-brand-gradient mt-8 rounded-2xl p-[2px] shadow-lg shadow-primary/20">
           <div className="rounded-[calc(var(--radius-xl)+0.0625rem)] bg-card p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
