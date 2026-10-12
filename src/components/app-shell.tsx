@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
-import { signOut } from "~/app/auth/actions";
 import { Icon, type IconName } from "~/components/icons";
 import { LogoMark } from "~/components/logo";
 import { ventureName } from "~/components/venture-title";
@@ -187,7 +186,7 @@ function SidebarContent({
               {user.email}
             </p>
           </div>
-          <form action={signOut}>
+          <form action="/auth/signout" method="post">
             <button
               type="submit"
               aria-label="Log out"

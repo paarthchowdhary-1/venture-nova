@@ -97,12 +97,6 @@ export async function signIn(
   redirect("/dashboard");
 }
 
-export async function signOut() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect("/");
-}
-
 const emailSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
 });

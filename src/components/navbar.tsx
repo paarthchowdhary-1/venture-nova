@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { signOut } from "~/app/auth/actions";
 import { LogoMark } from "~/components/logo";
 import { Button } from "~/components/ui/button";
 import { getIsAdmin, getSessionUser } from "~/lib/session";
@@ -47,7 +46,7 @@ export async function Navbar() {
               >
                 Portfolio
               </Link>
-              <form action={signOut}>
+              <form action="/auth/signout" method="post">
                 <Button
                   type="submit"
                   size="sm"
