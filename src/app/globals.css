@@ -54,6 +54,10 @@
   --animate-shine: shine 3.5s ease-in-out infinite;
   --animate-confetti: confetti 1.8s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
   --animate-pulse-ring: pulse-ring 2.2s ease-out infinite;
+  --animate-boom-piece: boom-piece 2.8s cubic-bezier(0.15, 0.8, 0.3, 1) forwards;
+  --animate-boom-ring: boom-ring 1.5s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+  --animate-boom-flash: boom-flash 1s ease-out forwards;
+  --animate-boom-emoji: boom-emoji 1.8s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
 
   @keyframes float {
     0%,
@@ -91,6 +95,68 @@
     }
     100% {
       transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.8);
+      opacity: 0;
+    }
+  }
+  @keyframes boom-piece {
+    0% {
+      transform: translate(0, 0) rotate(0deg) scale(0.3);
+      opacity: 1;
+    }
+    15% {
+      transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3))
+        rotate(calc(var(--rot) * 0.2)) scale(1);
+      opacity: 1;
+    }
+    45% {
+      transform: translate(calc(var(--dx) * 0.9), var(--dy))
+        rotate(calc(var(--rot) * 0.5)) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--dx), calc(var(--dy) + var(--fall)))
+        rotate(var(--rot)) scale(0.9);
+      opacity: 0;
+    }
+  }
+  @keyframes boom-ring {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+  }
+  @keyframes boom-flash {
+    0% {
+      transform: translate(-50%, -50%) scale(0.2);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2.4);
+      opacity: 0;
+    }
+  }
+  @keyframes boom-emoji {
+    0% {
+      transform: translate(-50%, -50%) scale(0) rotate(-25deg);
+      opacity: 0;
+    }
+    22% {
+      transform: translate(-50%, -50%) scale(1.5) rotate(8deg);
+      opacity: 1;
+    }
+    60% {
+      transform: translate(-50%, -50%) scale(1.25) rotate(-3deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2) rotate(0deg);
       opacity: 0;
     }
   }

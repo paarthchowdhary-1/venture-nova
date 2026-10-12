@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const COLORS = [
+export const CONFETTI_COLORS = [
   "oklch(0.55 0.22 273)",
   "oklch(0.7 0.18 22)",
   "oklch(0.76 0.15 165)",
@@ -27,7 +27,7 @@ type Piece = {
  * the browser keeps the confetti identical in both, so React never sees a
  * mismatch when a quiz result is rendered on the server first.
  */
-function seeded(seed: number) {
+export function seeded(seed: number) {
   let t = seed;
   return () => {
     t = (t + 0x6d2b79f5) | 0;
@@ -44,7 +44,7 @@ function makePieces(count: number): Piece[] {
     const distance = 140 + random() * 260;
     return {
       id: `c${i}`,
-      color: COLORS[i % COLORS.length],
+      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
       dx: Math.round(Math.cos(angle) * distance),
       dy: Math.round(Math.sin(angle) * distance + 120),
       rot: Math.round((random() - 0.5) * 900),
