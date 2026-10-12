@@ -1,53 +1,97 @@
-# venture-nova
+# VentureNova
 
-Created with [create-lumos-app](https://github.com/lumos-fellows/create-lumos-app).
+**A free, AI-coached entrepreneurship platform for young founders ages 12–18.**
 
-## Stack
+Live site: **[venturenova.org](https://venturenova.org)**
 
-- **Framework**: Next.js (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 + shadcn/ui
-- **Linter/Formatter**: Biome
-- **Integrations**: Supabase
+Most business-learning sites reward students for clicking through lessons. VentureNova measures progress by evidence: did you talk to real people, test your idea, and change your plan based on what you learned?
 
-## Getting Started
+Built by a student as part of the Lumos Fellows Program, starting from [create-lumos-app](https://github.com/lumos-fellows/create-lumos-app).
+
+## How it works
+
+Learn → Do → Record → Analyze → Adapt. A student describes an idea, gets a roadmap for their kind of venture, completes real tasks, records what happened, and lets the roadmap adapt to the evidence.
+
+## Features
+
+- **Personalized roadmaps** for different venture types (a tutoring service and an app need different next steps)
+- **50 short lessons with quizzes**, plus real-world tasks
+- **AI Coach** that knows the student's venture and stage, challenges weak assumptions, and won't invent customer quotes or give personal financial advice
+- **A venture workspace**: Validation Lab, Interviews, Evidence Vault, Competitors, Decisions, MVP Planner, and Launch Center
+- **Health score and "next best action"** based on evidence, not clicks
+- **Public share page and portfolio** for showing a venture to others
+- **Accounts with first-name greetings**, and a private admin view with an audit log
+- **Responsive design** that works on phones, so students can use it in class
+
+## Tech stack
+
+| Area | Choice |
+|------|--------|
+| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| Styling | Tailwind CSS v4 with OKLCH design tokens |
+| Database and auth | Supabase (Postgres with row-level security) |
+| AI | Anthropic Claude API |
+| Hosting | Vercel |
+| Tooling | Biome (lint and format), Zod + t3-env for validated environment variables |
+
+## Getting started
 
 ```bash
-# Install dependencies
 npm install
-
-# Fill in your env vars
-$EDITOR .env.local
-
-# Start the dev server
+# create .env.local and fill in the values below
 npm run dev
 ```
 
-## Environment Variables
+Open [http://localhost:3000](http://localhost:3000).
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
+### Environment variables
 
-Fill in your values in `.env.local`.
+All environment variables are validated in `src/env.ts`.
 
-## Scripts
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Your Supabase anon/public key |
+| `ANTHROPIC_API_KEY` | No | Enables the AI Coach (the rest of the site works without it) |
+
+Never commit `.env.local`. It is ignored by git.
+
+### Database
+
+Schema changes live in `supabase/migrations/` and are applied with the Supabase CLI:
+
+```bash
+npx supabase db push --dry-run   # preview
+npx supabase db push             # apply
+```
+
+### Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server |
+| `npm run dev` | Start the development server |
 | `npm run build` | Build for production |
-| `npm run format` | Format code with Biome |
-| `npm run lint` | Lint code with Biome |
-| `npm run typecheck` | Run TypeScript type checking |
+| `npm run start` | Run the production build |
+| `npm run lint` | Lint with Biome |
+| `npm run format` | Format with Biome |
+| `npm run typecheck` | Type-check with TypeScript |
 
-## Optional: Doppler for Secrets Management
+## Project structure
 
-For team environments, consider using [Doppler](https://www.doppler.com/) to manage env vars:
-
-```bash
-# Install Doppler CLI, then:
-doppler setup
-doppler run -- npm run dev
 ```
+src/app/          Pages and routes (landing, dashboard, ventures, admin, public share)
+src/components/   UI, app shell, landing page, venture workspace components
+src/lib/          Session, AI, insights, lessons, tasks, and roadmap logic
+supabase/         Database migrations and config
+docs/PRD.md       Product spec and MVP scope
+```
+
+## Safety and privacy
+
+- Row-level security on every table, so students can only read and write their own data
+- AI Coach has usage limits and refuses to fabricate evidence
+- Admin access is restricted to listed admins, and every admin view is written to an audit log
+
+## Status
+
+Beta. Built and launched in October 2026, and being tested with its first real students.
