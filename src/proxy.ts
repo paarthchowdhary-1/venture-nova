@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { env } from "~/env";
 
 /** Pages that need a signed-in founder. */
-const APP_PATH = /^\/(dashboard|portfolio|ventures|admin)(\/|$)/;
+const APP_PATH = /^\/(dashboard|portfolio|ventures|admin|feedback)(\/|$)/;
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });

@@ -31,6 +31,12 @@ export default async function AdminLayout({
           >
             Access log
           </Link>
+          <Link
+            href="/admin/feedback"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Feedback
+          </Link>
         </div>
       </div>
       {children}

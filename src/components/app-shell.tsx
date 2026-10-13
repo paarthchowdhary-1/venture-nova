@@ -21,7 +21,7 @@ export type ShellUser = {
 export type ShellVenture = { id: string; name: string };
 
 /** Pages that live inside the signed-in app (sidebar) instead of the marketing site. */
-const APP_PATH = /^\/(dashboard|portfolio|ventures|admin)(\/|$)/;
+const APP_PATH = /^\/(dashboard|portfolio|ventures|admin|feedback)(\/|$)/;
 
 function NavLink({
   href,
@@ -163,13 +163,12 @@ function SidebarContent({
       )}
 
       <div className="mt-auto flex flex-col gap-1 pt-6">
-        <a
-          href="mailto:hello@venturenova.org?subject=VentureNova%20feedback"
-          className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-        >
-          <Icon name="help" className="size-[18px]" />
-          Help &amp; feedback
-        </a>
+        <NavLink
+          href="/feedback"
+          icon="help"
+          label="Help & feedback"
+          active={pathname === "/feedback"}
+        />
         <div className="mx-2 my-2 border-t border-border" />
         <div className="flex items-center gap-3 px-2">
           <span
@@ -315,6 +314,8 @@ export function AppShell({
     crumbs.push({ key: "portfolio", label: "Founder portfolio" });
   } else if (pathname === "/ventures/new") {
     crumbs.push({ key: "new", label: "New venture" });
+  } else if (pathname === "/feedback") {
+    crumbs.push({ key: "feedback", label: "Help & feedback" });
   } else if (pathname.startsWith("/admin")) {
     crumbs.push({
       key: "admin",
