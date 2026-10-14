@@ -67,6 +67,22 @@ export function buildVentureContext(s: Snapshot) {
     `Lessons passed: ${s.lessons.passed} of ${s.lessons.total}. Tasks done: ${s.tasks.filter((t) => t.status === "done").length} of ${s.tasks.length}`,
     `Customer interviews logged: ${s.interviews.length}`,
   ];
+  // What the founder wrote on their tasks (a problem statement, a one-sentence
+  // idea, and so on). Without this the coach only sees the venture's own fields
+  // and would say they haven't written anything when they have.
+  const taskNotes = s.tasks
+    .map((t) => ({
+      title: t.title,
+      status: t.status,
+      note: t.evidence?.trim(),
+    }))
+    .filter((t) => t.note);
+  if (taskNotes.length > 0) {
+    lines.push("Notes the founder wrote on their tasks (their own words):");
+    for (const t of taskNotes.slice(0, 8)) {
+      lines.push(`- ${t.title} (${t.status}): "${t.note?.slice(0, 300)}"`);
+    }
+  }
   if (patterns.length > 0) {
     lines.push(
       `Problems mentioned in interviews: ${patterns.map((p) => `${p.tag} (${p.count}/${p.total})`).join(", ")}`,

@@ -58,6 +58,8 @@ export type TaskLite = {
   stage: string;
   title: string;
   status: string;
+  /** What the founder wrote when they worked on it. */
+  evidence: string | null;
 };
 
 export type Snapshot = {

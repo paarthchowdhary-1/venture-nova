@@ -119,6 +119,7 @@ export async function loadWorkspace(
       stage: t.stage,
       title: t.title,
       status: t.status,
+      evidence: t.evidence,
     })),
     interviews: (interviews.data ?? []) as Interview[],
     hypotheses: (hypotheses.data ?? []) as Hypothesis[],
