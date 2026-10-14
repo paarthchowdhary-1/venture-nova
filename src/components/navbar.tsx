@@ -66,6 +66,12 @@ export async function Navbar() {
                 How it works
               </Link>
               <Link
+                href="/about"
+                className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
+              >
+                About
+              </Link>
+              <Link
                 href="/login"
                 className="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >

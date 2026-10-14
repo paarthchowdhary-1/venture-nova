@@ -254,3 +254,23 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Sections fade up the first time they scroll into view. Without JavaScript
+   they simply show, and people who ask for less motion get no movement. */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+  &[data-in="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
