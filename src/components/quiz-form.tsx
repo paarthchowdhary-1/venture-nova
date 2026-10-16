@@ -94,18 +94,33 @@ function QuizAttempt({
                       <li
                         key={option}
                         className={cn(
-                          "rounded-md border px-3 py-2 text-sm",
-                          isCorrect && "border-primary bg-primary/5",
-                          isPicked && !isCorrect && "border-destructive/50",
+                          "flex items-start gap-2 rounded-md border px-3 py-2 text-sm",
+                          isCorrect &&
+                            "border-mint bg-mint-soft font-medium text-mint-ink",
+                          isPicked &&
+                            !isCorrect &&
+                            "border-destructive/50 bg-destructive/5",
                         )}
                       >
-                        {option}
                         {isCorrect && (
-                          <span className="ml-2 font-medium">(correct)</span>
+                          <Icon
+                            name="check"
+                            className="mt-0.5 size-4 shrink-0"
+                          />
                         )}
                         {isPicked && !isCorrect && (
-                          <span className="ml-2 font-medium text-destructive">
-                            (your answer)
+                          <Icon
+                            name="close"
+                            className="mt-0.5 size-4 shrink-0 text-destructive"
+                          />
+                        )}
+                        <span>{option}</span>
+                        {isCorrect && (
+                          <span className="sr-only">(correct answer)</span>
+                        )}
+                        {isPicked && !isCorrect && (
+                          <span className="ml-auto shrink-0 text-xs font-medium text-destructive">
+                            Your answer
                           </span>
                         )}
                       </li>
