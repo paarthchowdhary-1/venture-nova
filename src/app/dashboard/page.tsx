@@ -269,7 +269,10 @@ export default async function DashboardPage() {
                                   style.soft,
                                 )}
                               >
-                                {style.emoji}
+                                <Icon
+                                  name={style.icon}
+                                  className="size-5 text-primary-ink"
+                                />
                               </span>
                               <div className="min-w-0">
                                 <h3 className="font-bold">
@@ -375,7 +378,7 @@ export default async function DashboardPage() {
             <Panel className="flex items-center gap-4">
               <span
                 aria-hidden
-                className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-warm/15 text-warm"
+                className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary-ink"
               >
                 <Icon name="flame" className="size-7" />
               </span>

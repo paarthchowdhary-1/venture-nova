@@ -2,16 +2,16 @@ import { cn } from "~/lib/utils";
 
 const FILL = {
   brand: "bg-brand-gradient",
-  mint: "bg-linear-to-r from-mint to-sky",
-  coral: "bg-linear-to-r from-coral to-warm",
-  sky: "bg-linear-to-r from-sky to-primary",
-  grape: "bg-linear-to-r from-grape to-coral",
-  sun: "bg-linear-to-r from-warm to-coral",
+  mint: "bg-brand-gradient",
+  coral: "bg-brand-gradient",
+  sky: "bg-brand-gradient",
+  grape: "bg-brand-gradient",
+  sun: "bg-brand-gradient",
 } as const;
 
 export type ProgressTone = keyof typeof FILL;
 
-/** A rounded progress bar with a gradient fill. */
+/** A rounded progress bar in the brand color. */
 export function ProgressBar({
   percent,
   tone = "brand",

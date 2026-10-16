@@ -20,19 +20,19 @@ const principles: {
     icon: "folder",
     title: "Evidence over clicks",
     body: "Lessons and tasks only take you part of the way. The rest of your progress has to come from real evidence: interviews you did, ideas you tested, and what you learned.",
-    tone: "bg-grape-soft text-grape-ink",
+    tone: "bg-secondary text-primary-ink",
   },
   {
     icon: "chat",
     title: "A coach that asks, not tells",
     body: "The AI coach knows your venture and your stage. It asks hard questions and challenges weak assumptions, and you make the decisions.",
-    tone: "bg-sky-soft text-sky-ink",
+    tone: "bg-secondary text-primary-ink",
   },
   {
     icon: "gift",
     title: "Free to start",
     body: "No credit card, no ads. Sign up with an email and password and you can start your first venture in about a minute.",
-    tone: "bg-mint-soft text-mint-ink",
+    tone: "bg-secondary text-primary-ink",
   },
 ];
 
@@ -100,7 +100,7 @@ export default function AboutPage() {
           <li className="flex gap-3">
             <Icon
               name="check"
-              className="mt-1.5 size-5 shrink-0 text-mint-ink"
+              className="mt-1.5 size-5 shrink-0 text-primary-ink"
             />
             It asks questions and challenges your thinking. It does not do the
             work for you.
@@ -108,7 +108,7 @@ export default function AboutPage() {
           <li className="flex gap-3">
             <Icon
               name="check"
-              className="mt-1.5 size-5 shrink-0 text-mint-ink"
+              className="mt-1.5 size-5 shrink-0 text-primary-ink"
             />
             It won&apos;t make up customer quotes or evidence. If you
             haven&apos;t tested something yet, it says so.
@@ -116,7 +116,7 @@ export default function AboutPage() {
           <li className="flex gap-3">
             <Icon
               name="check"
-              className="mt-1.5 size-5 shrink-0 text-mint-ink"
+              className="mt-1.5 size-5 shrink-0 text-primary-ink"
             />
             It is not a financial advisor and doesn&apos;t give personal
             financial advice.

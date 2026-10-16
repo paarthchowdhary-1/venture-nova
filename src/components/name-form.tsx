@@ -18,7 +18,7 @@ export function NameForm() {
     >
       <div className="flex flex-1 flex-col gap-1.5">
         <label htmlFor="first-name" className="text-sm font-medium">
-          <span aria-hidden>👋 </span>What should we call you?
+          What should we call you?
         </label>
         <Input
           id="first-name"

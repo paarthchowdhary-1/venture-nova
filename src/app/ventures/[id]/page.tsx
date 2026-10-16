@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ConfettiRain } from "~/components/confetti-rain";
+import { Icon } from "~/components/icons";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ProgressBar, type ProgressTone } from "~/components/ui/progress";
@@ -13,7 +14,7 @@ import {
   ventureProgress,
 } from "~/lib/insights";
 import { cn } from "~/lib/utils";
-import { STAGE_EMOJI, typeStyle } from "~/lib/venture-style";
+import { typeStyle } from "~/lib/venture-style";
 import { STAGES, ventureTypeLabel } from "~/lib/ventures";
 import { requireWorkspace } from "~/lib/workspace-page";
 
@@ -81,9 +82,9 @@ export default async function VenturePage({
           <div className="flex items-center gap-3">
             <span
               aria-hidden
-              className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/80 text-2xl shadow-sm"
+              className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-card shadow-sm"
             >
-              {style.emoji}
+              <Icon name={style.icon} className="size-6 text-primary-ink" />
             </span>
             <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
               <VentureTitle name={venture.name} />
@@ -108,7 +109,7 @@ export default async function VenturePage({
         <section className="bg-hero relative mt-8 overflow-hidden rounded-2xl border border-primary/30 p-5 sm:p-6">
           <ConfettiRain />
           <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl">
-            <span aria-hidden>🎉</span> Your venture is set up!
+            Your venture is set up!
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             You&apos;ve done the hardest part: you started. Here are two good
@@ -153,9 +154,6 @@ export default async function VenturePage({
         <section className="bg-brand-gradient mt-8 rounded-2xl p-[2px] shadow-lg shadow-primary/20">
           <div className="rounded-[calc(var(--radius-xl)+0.0625rem)] bg-card p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-              <span aria-hidden className="mr-1">
-                🎯
-              </span>
               Your next best action
             </p>
             <h2 className="mt-1 text-xl font-semibold">{nextAction.title}</h2>
@@ -233,11 +231,12 @@ export default async function VenturePage({
                   className={cn(
                     "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-sm",
                     state === "done" && "bg-mint text-white",
-                    state === "current" && "bg-brand-gradient glow",
-                    state === "next" && "bg-muted grayscale",
+                    state === "current" &&
+                      "bg-primary font-semibold text-primary-foreground",
+                    state === "next" && "bg-muted text-muted-foreground",
                   )}
                 >
-                  {state === "done" ? "✓" : STAGE_EMOJI[i]}
+                  {state === "done" ? "✓" : i + 1}
                 </span>
                 <span>
                   <span

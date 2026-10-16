@@ -5,7 +5,7 @@ import {
   quickStartVenture,
   type VentureFormState,
 } from "~/app/ventures/actions";
-import { Sparkle } from "~/components/icons";
+import { Icon, Sparkle } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { cn } from "~/lib/utils";
@@ -118,7 +118,10 @@ export function WelcomeStart({ firstName }: { firstName: string | null }) {
                       style.soft,
                     )}
                   >
-                    {style.emoji}
+                    <Icon
+                      name={style.icon}
+                      className="size-5 text-primary-ink"
+                    />
                   </span>
                   <span>
                     <span className="block font-semibold">{t.label}</span>

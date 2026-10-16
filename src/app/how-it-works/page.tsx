@@ -98,7 +98,7 @@ export default function HowItWorksPage() {
           {loop.map((item) => (
             <Card key={item.step} className="gap-3">
               <CardHeader>
-                <span className="flex size-8 items-center justify-center rounded-full bg-warm text-sm font-semibold text-warm-foreground">
+                <span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                   {item.step}
                 </span>
                 <CardTitle className="text-lg text-primary-ink">

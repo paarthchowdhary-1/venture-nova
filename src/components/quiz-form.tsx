@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { type QuizState, submitQuiz } from "~/app/ventures/lesson-actions";
 import { Confetti } from "~/components/confetti";
+import { Icon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -50,12 +51,11 @@ function QuizAttempt({
           className={cn(
             "rounded-2xl border p-5",
             result.passed
-              ? "border-mint/50 bg-linear-to-br from-mint-soft to-sky-soft animate-pop"
+              ? "border-primary/30 bg-secondary animate-pop"
               : "border-destructive/40 bg-destructive/5",
           )}
         >
           <p className="text-lg font-bold">
-            <span aria-hidden>{result.passed ? "🎉 " : "💪 "}</span>
             You got {result.score} of {result.total}.{" "}
             {result.passed ? "Nice work, you passed!" : "Not quite yet."}
           </p>
@@ -66,8 +66,9 @@ function QuizAttempt({
           </p>
           {result.advancedTo && (
             <p className="bg-brand-gradient mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold text-primary-foreground shadow-md">
-              <span aria-hidden>🚀</span> Level up! You moved up to the{" "}
-              <span className="capitalize">{result.advancedTo}</span> stage
+              <Icon name="rocket" className="size-4" /> Level up! You moved up
+              to the <span className="capitalize">{result.advancedTo}</span>{" "}
+              stage
             </p>
           )}
           {result.passed && result.allDone && (

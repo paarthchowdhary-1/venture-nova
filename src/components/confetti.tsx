@@ -3,12 +3,11 @@
 import { useState } from "react";
 
 export const CONFETTI_COLORS = [
-  "oklch(0.55 0.22 273)",
-  "oklch(0.7 0.18 22)",
-  "oklch(0.76 0.15 165)",
-  "oklch(0.82 0.17 78)",
-  "oklch(0.6 0.22 305)",
-  "oklch(0.74 0.13 230)",
+  "oklch(0.5 0.2 273)",
+  "oklch(0.72 0.12 275)",
+  "oklch(0.38 0.17 277)",
+  "oklch(0.72 0.03 275)",
+  "oklch(0.82 0.15 80)",
 ];
 
 type Piece = {

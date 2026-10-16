@@ -18,18 +18,18 @@ export function FeedbackForm({ from }: { from?: string }) {
     return (
       <div
         role="status"
-        className="flex flex-col items-start gap-3 rounded-2xl border border-mint/40 bg-mint-soft p-6"
+        className="flex flex-col items-start gap-3 rounded-2xl border border-border bg-secondary p-6"
       >
-        <p className="text-xl font-extrabold text-mint-ink">
-          <span aria-hidden>🎉 </span>Thank you! Your message was sent.
+        <p className="text-xl font-extrabold text-primary-ink">
+          Thank you! Your message was sent.
         </p>
-        <p className="text-sm text-mint-ink/80">
+        <p className="text-sm text-muted-foreground">
           Every message gets read. It helps make VentureNova better for you and
           everyone after you.
         </p>
         <Button
           variant="outline"
-          className="rounded-full bg-white/70"
+          className="rounded-full bg-card"
           onClick={() => window.location.assign("/feedback")}
         >
           Send another

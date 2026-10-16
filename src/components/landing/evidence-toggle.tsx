@@ -50,7 +50,7 @@ export function EvidenceToggle() {
               Lessons completed
             </p>
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-secondary">
-              <div className="h-full w-[83%] rounded-full bg-warm" />
+              <div className="h-full w-[83%] rounded-full bg-primary" />
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
               Looks great. Tells you almost nothing about the venture.
