@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Icon, type IconName, Sparkle } from "~/components/icons";
 import { CoachDemo } from "~/components/landing/coach-demo";
-import { DashboardMock } from "~/components/landing/mocks";
 import { Reveal } from "~/components/landing/reveal";
 import { StartCta } from "~/components/landing/start-cta";
 import { VentureTabs } from "~/components/landing/venture-tabs";
@@ -36,15 +35,15 @@ export default async function Home() {
     <div className="flex flex-col">
       <section className="bg-hero relative isolate overflow-hidden">
         <div className="bg-dots absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(70%_60%_at_50%_30%,black,transparent)]" />
-        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-4 pt-14 pb-16 sm:pt-24 sm:pb-24 lg:grid-cols-[1.05fr_1fr]">
-          <div className="flex flex-col items-center gap-5 text-center sm:gap-6 lg:items-start lg:text-left">
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-4 pt-14 pb-14 sm:pt-28 sm:pb-24">
+          <div className="flex flex-col items-center gap-5 text-center sm:gap-6">
             <Badge className="animate-rise gap-1.5 border border-border bg-secondary px-3 py-1 text-primary-ink">
               <Sparkle className="size-3.5" />
               {user?.name
                 ? `Welcome back, ${user.name}!`
                 : "For young entrepreneurs, ages 12–18"}
             </Badge>
-            <h1 className="animate-rise text-4xl font-extrabold tracking-tight text-balance [animation-delay:80ms] sm:text-6xl">
+            <h1 className="animate-rise max-w-5xl text-4xl font-extrabold tracking-tight text-balance [animation-delay:80ms] sm:text-6xl">
               You have an idea. <br className="hidden sm:block" />
               <span className="text-gradient">VentureNova</span> helps you build
               it.
@@ -71,7 +70,7 @@ export default async function Home() {
                 <StartCta showSecondary />
               )}
             </div>
-            <ul className="animate-rise mt-2 flex flex-wrap justify-center gap-2 [animation-delay:320ms] lg:justify-start">
+            <ul className="animate-rise mt-2 flex flex-wrap justify-center gap-2 [animation-delay:320ms]">
               {perks.map((p) => (
                 <li
                   key={p.label}
@@ -82,9 +81,6 @@ export default async function Home() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="animate-rise [animation-delay:200ms]">
-            <DashboardMock />
           </div>
         </div>
       </section>
